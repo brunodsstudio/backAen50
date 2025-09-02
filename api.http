@@ -1,0 +1,27 @@
+@email = "brunodsstudio@gmail.com"
+@password = "motokob8q2p9"
+
+# @name autenticar
+POST http://127.0.0.1:8000/api/login
+Content-Type: application/json
+
+{
+  "email": {{email}},
+  "password": {{password}}
+}
+
+###
+
+@token = {{autenticar.response.body.$.access_token}}
+
+
+# @name registrar
+POST http://127.0.0.1:8000/api/register
+Content-Type: application/json
+
+{
+  "email": "brunodsstudio@gmail.com",
+  "name": "Bruno",
+  "password": "motokob8q2p9"
+}
+
