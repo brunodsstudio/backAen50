@@ -11,7 +11,6 @@ return new class extends Migration
      */
     public function up(): void
     {
-
         Schema::create('tb_aen_area', function (Blueprint $table) {
                 $table->id('int_Id');
                 $table->string('vchr_AreaNome');
@@ -21,7 +20,6 @@ return new class extends Migration
                 $table->integer('int_rolePermission')->default(0);
                 $table->timestamps();
             });
-
     }
 
     /**
