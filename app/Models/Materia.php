@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class materia extends Model
+class Materia extends Model
 {
      protected $table = 'tb_aen_materia';
     protected $primaryKey = 'id';
@@ -33,4 +33,19 @@ class materia extends Model
         'materiaUUID',
         'IdSocialIconTemplate'
     ];
+
+    public function images()
+    {
+        return $this->hasMany(Images::class, 'int_MateriaId');
+    }
+
+    public function area()
+    {
+        return $this->belongsTo(Area::class, 'id_area');
+    }
+
+    public function writer()
+    {
+        return $this->belongsTo(Writers::class, 'int_autor');
+    }
 }
