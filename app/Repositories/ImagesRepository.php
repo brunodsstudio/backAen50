@@ -41,6 +41,8 @@ class ImagesRepository implements ImagesInterface{
     public function create(int $idMateria,ImagesDTO $imagesDTO)
     {
 
+
+
         try {
             $image = new Images();
             $image->vchr_ImgLink = $imagesDTO->vchr_ImgLink;
@@ -56,6 +58,36 @@ class ImagesRepository implements ImagesInterface{
             $image->dl_Thumb_SizeH = $imagesDTO->dl_Thumb_SizeH;
             $image->int_Ordem = $imagesDTO->int_Ordem;
             $image->save();
+
+            return $image;
+        } catch (Exception $e) {
+            Log::error('Error creating image: ' . $e->getMessage());
+            throw new Exception('Could not create image.');
+        }
+    }
+
+    public function createBash(int $idMateria,ImagesDTO $imagesDTO)
+    {
+
+        try {
+            foreach($imagesDTO as $imageDTO)
+            {
+                $image = new Images();
+                $image->vchr_ImgLink = $imageDTO->vchr_ImgLink;
+                $image->vchr_ImgThumbLink = $imageDTO->vchr_ImgThumbLink;
+                $image->int_MateriaId = $imageDTO->int_MateriaId;
+                $image->vchr_Tipo = $imageDTO->vchr_Tipo;
+                $image->vchr_Descricao = $imageDTO->vchr_Descricao;
+                $image->dt_Upload = $imageDTO->dt_Upload;
+                $image->vchr_HRef = $imageDTO->vchr_HRef;
+                $image->dl_SizeW = $imageDTO->dl_SizeW;
+                $image->dl_SizeH = $imageDTO->dl_SizeH;
+                $image->dl_Thumb_SizeW = $imageDTO->dl_Thumb_SizeW;
+                $image->dl_Thumb_SizeH = $imageDTO->dl_Thumb_SizeH;
+                $image->int_Ordem = $imageDTO->int_Ordem;
+                $image->save();
+            }
+           
 
             return $image;
         } catch (Exception $e) {
