@@ -34,6 +34,7 @@ class Materia extends Model
         'IdSocialIconTemplate'
     ];
 
+
     public function Writers(){
         return $this->BelongTo(Writers::class, 'int_autor');
     }
@@ -47,4 +48,4 @@ class Materia extends Model
     }
 
 
-}
+

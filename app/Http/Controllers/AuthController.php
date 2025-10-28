@@ -26,6 +26,8 @@ class AuthController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
+        //return dd($token);
+
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
@@ -33,7 +35,8 @@ class AuthController extends Controller
             //'user' => new UserResource(Auth::guard('api')->user()),
         ]);
     } catch (\Exception $e) {
-        return response()->json(['error' => 'Could not create token'], 500);
+        echo "<pre>". $e . "</pre>";
+       // return response()->json(['error' => 'Could not create token \n\r' . $e], 500);
 
     }
 }
