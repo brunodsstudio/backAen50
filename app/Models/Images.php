@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Imagem extends Model
+class Images extends Model
 {
     protected $table = 'tb_aen_images';
     protected $primaryKey = 'int_Id';
@@ -17,5 +17,6 @@ class Imagem extends Model
 
     public function Materia(){
         return $this->belongsTo(Materia::class, 'int_MateriaId');
-    }
+    }   
+
 }

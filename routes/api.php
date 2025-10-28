@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AreaController;
+use App\Http\Controllers\MateriaController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -12,6 +13,14 @@ Route::get('/user', function (Request $request) {
 Route::get('/areas', [AreaController::class, 'index']);
 Route::get('/areas/{id}', [AreaController::class, 'show']);
 Route::post('/areas', [AreaController::class, 'store']);
+
+Route::group(['prefix' => 'materias'], function () {
+    Route::get('/', [MateriaController::class, 'index']);
+    Route::get('/{id}', [MateriaController::class, 'show']);
+    Route::post('/', [MateriaController::class, 'store']);
+});
+
+
 // You can add more routes for update and delete as needed
 
   Route::post('/register', [AuthController::class, 'register']);

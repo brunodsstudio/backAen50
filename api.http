@@ -24,4 +24,17 @@ Content-Type: application/json
   "name": "Bruno",
   "password": "motokob8q2p9"
 }
+###
+#@name materias
+GET http://127.0.0.1:3001/api/materias
+
+###
+#@name areas  
+GET http://127.0.0.1:3001/api/areas
+
+###
+#@name writers
+GET http://127.0.0.1:3001/api/writers
+
+
 

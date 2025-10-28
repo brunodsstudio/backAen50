@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class materia extends Model
+class Materia extends Model
 {
-     protected $table = 'tb_aen_materia';
+    protected $table = 'tb_aen_materias';
     protected $primaryKey = 'id';
 
     protected $fillable = [
@@ -33,4 +33,18 @@ class materia extends Model
         'materiaUUID',
         'IdSocialIconTemplate'
     ];
+
+    public function Writers(){
+        return $this->BelongTo(Writers::class, 'int_autor');
+    }
+
+    public function Images(){
+        return $this->hasMany(Images::class);
+    }
+
+    public function Area(){
+        return $this->hasOne(Area::class, 'int_Id');
+    }
+
+
 }

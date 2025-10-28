@@ -16,5 +16,10 @@ class area extends Model
         'b_menu',
         'int_rolePermission'
     ];
+
+    public function Materia(){
+        return $this->hasMany(Materia::class, 'id_area');
+    }
+
     //
 }

@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\materia;
+use App\Models\Materia;
+use App\Http\Resources\MateriaResource;
 use Illuminate\Http\Request;
+use App\Services\MateriaService;
+use App\Repositories\MateriaRepository;
 
 class MateriaController extends Controller
 {
@@ -12,7 +15,18 @@ class MateriaController extends Controller
      */
     public function index()
     {
-        //
+       // try{
+            $materiaService = new MateriaService(new MateriaRepository());
+            $materia = $materiaService->getAllWithPaginate(10, 1);
+
+
+           // dd($materia->items());
+          
+            return response()->json( MateriaResource::collection($materia->items()), 200);
+       /* } catch (\Exception $e) {
+            return  response()->json(['error' => $e->getMessage()], 500);
+        }*/
+    
     }
 
     /**
