@@ -47,5 +47,5 @@ class Materia extends Model
         return $this->hasOne(Area::class, 'int_Id');
     }
 
-
+}
 
