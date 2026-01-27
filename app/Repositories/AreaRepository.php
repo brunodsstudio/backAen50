@@ -22,7 +22,15 @@ class AreaRepository implements AreaInterface
 
     public function getAll()
     {
-        return $this->model->all();
+        return $this->model->orderBy('vchr_AreaNome', 'asc')->get();
+    }
+
+    public function getAllWithPaginate(int $perPage = 10, int $page = 1)
+    {
+        return $this->model
+            ->select('int_Id', 'vchr_AreaNome', 'vchr_Tag', 'type', 'b_menu', 'int_rolePermission')
+            ->orderBy('vchr_AreaNome', 'asc')
+            ->paginate($perPage, ['*'], 'page', $page);
     }
 
     public function getById(int $id)
@@ -33,15 +41,7 @@ class AreaRepository implements AreaInterface
     public function create(AreaDto $areaDTO)
     {
         try {
-            $area = new Area();
-            $area->vchr_AreaNome = $areaDTO->vchr_AreaNome;
-            $area->vchr_Tag = $areaDTO->vchr_Tag;
-            $area->type = json_encode($areaDTO->type);
-            $area->b_menu = $areaDTO->b_menu;
-            $area->int_rolePermission = $areaDTO->int_rolePermission;
-            $area->save();
-
-            return $area;
+            return $this->model->create($areaDTO->toArray());
         } catch (Exception $e) {
             Log::error('Error creating area: ' . $e->getMessage());
             throw new Exception('Could not create area.');
@@ -52,14 +52,8 @@ class AreaRepository implements AreaInterface
     {
         try {
             $area = $this->model->findOrFail($id);
-            $area->vchr_AreaNome = $areaDTO->vchr_AreaNome;
-            $area->vchr_Tag = $areaDTO->vchr_Tag;
-            $area->type = json_encode($areaDTO->type);
-            $area->b_menu = $areaDTO->b_menu;
-            $area->int_rolePermission = $areaDTO->int_rolePermission;
-            $area->save();
-
-            return $area;
+            $area->update($areaDTO->toArray());
+            return $area->fresh();
         } catch (ModelNotFoundException $e) {
             Log::error('Area not found: ' . $e->getMessage());
             throw new Exception('Area not found.');

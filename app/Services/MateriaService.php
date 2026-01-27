@@ -46,4 +46,38 @@ class MateriaService
     {
         return $this->materiaRepository->delete($id);
     }
+
+    public function getMateriasHome(int $limit = 20)
+    {
+        return $this->materiaRepository->getMateriasHome($limit);
+    }
+
+    public function getMateriasCategoria(
+        int $idArea,
+        int $perPage = 10,
+        string $orderBy = 'created_at',
+        string $orderDirection = 'desc'
+    ) {
+        return $this->materiaRepository->getMateriasCategoria(
+            $idArea,
+            $perPage,
+            $orderBy,
+            $orderDirection
+        );
+    }
+
+    public function getByLinkTitulo(string $linkTitulo)
+    {
+        return $this->materiaRepository->getByLinkTitulo($linkTitulo);
+    }
+
+    public function getByTag(string $tag, int $limit = 3)
+    {
+        return $this->materiaRepository->getByTag($tag, $limit);
+    }
+
+    public function getTagsSummary(int $limit = 50)
+    {
+        return $this->materiaRepository->getTagsSummary($limit);
+    }
 }

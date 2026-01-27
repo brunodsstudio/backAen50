@@ -1,5 +1,8 @@
-@email = "brunodsstudio@gmail.com"
+@email = "admin@aeranerd.com"
 @password = "motokob8q2p9"
+@access_token = "eQ5YSeP1eHdRFPe17ZRJX7anUxAD2DUci5RvvMBsFLk4OpW0kzCEwXUPAyQaYxhU"
+
+@pastaS3 = FESTIVALDOJAPAO2024
 
 # @name autenticar
 POST http://127.0.0.1:3001/api/login
@@ -13,7 +16,7 @@ Content-Type: application/json
 ###
 
 @token = {{autenticar.response.body.$.access_token}}
-
+#token = {{access_token}}
 
 # @name registrar
 POST http://127.0.0.1:3001/api/register
@@ -26,7 +29,8 @@ Content-Type: application/json
 }
 ###
 #@name materias
-GET http://127.0.0.1:3001/api/materias
+GET http://127.0.0.1:3001/api/materiasblza
+
 
 ###
 #@name areas  
@@ -35,6 +39,20 @@ GET http://127.0.0.1:3001/api/areas
 ###
 #@name writers
 GET http://127.0.0.1:3001/api/writers
+
+### ===================================
+### 2. Buscar Galeria - Página 1 (padrão 25 itens)
+### ===================================
+GET http://127.0.0.1:3001/api/Galerias/{{pastaS3}}/1
+Authorization: Bearer {{token}}
+Accept: application/json
+
+### ===================================
+### 3. Buscar Galeria - Página 1 (10 itens por página)
+### ===================================
+GET http://127.0.0.1:3001/api/Galerias/{{pastaS3}}/1?quantidadePorPagina=10
+Authorization: Bearer {{token}}
+Accept: application/json
 
 
 

@@ -9,6 +9,20 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Sanctum\HasApiTokens;
 
+/**
+ * @OA\Schema(
+ *     schema="User",
+ *     type="object",
+ *     title="User",
+ *     description="Modelo de Usuário",
+ *     @OA\Property(property="id", type="integer", description="ID do usuário"),
+ *     @OA\Property(property="name", type="string", description="Nome do usuário"),
+ *     @OA\Property(property="email", type="string", format="email", description="Email do usuário"),
+ *     @OA\Property(property="email_verified_at", type="string", format="date-time", description="Data de verificação do email"),
+ *     @OA\Property(property="created_at", type="string", format="date-time", description="Data de criação"),
+ *     @OA\Property(property="updated_at", type="string", format="date-time", description="Data de atualização")
+ * )
+ */
 class User extends Authenticatable implements JWTSubject
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */

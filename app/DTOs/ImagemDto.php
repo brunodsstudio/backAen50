@@ -13,6 +13,10 @@ class ImagemDto
     public ?string $vchr_Descricao;
     public ?string $dt_Upload;
     public ?string $vchr_HRef;
+    public ?float $dl_SizeW;
+    public ?float $dl_SizeH;
+    public ?float $dl_Thumb_SizeW;
+    public ?float $dl_Thumb_SizeH;
     public ?int $int_Ordem;
     
 
@@ -25,6 +29,10 @@ class ImagemDto
         ?string $vchr_Descricao = null,
         ?string $dt_Upload = null,
         ?string $vchr_HRef = null,
+        ?float $dl_SizeW = null,
+        ?float $dl_SizeH = null,
+        ?float $dl_Thumb_SizeW = null,
+        ?float $dl_Thumb_SizeH = null,
         ?int $int_Ordem = null){
             $this->int_Id = $int_Id;
             $this->vchr_ImgLink = $vchr_ImgLink;
@@ -34,6 +42,10 @@ class ImagemDto
             $this->vchr_Descricao = $vchr_Descricao;
             $this->dt_Upload = $dt_Upload;
             $this->vchr_HRef = $vchr_HRef;
+            $this->dl_SizeW = $dl_SizeW;
+            $this->dl_SizeH = $dl_SizeH;
+            $this->dl_Thumb_SizeW = $dl_Thumb_SizeW;
+            $this->dl_Thumb_SizeH = $dl_Thumb_SizeH;
             $this->int_Ordem = $int_Ordem;
         }
     
