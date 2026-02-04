@@ -2,7 +2,7 @@
     "openapi": "3.0.0",
     "info": {
         "title": "AERANERD API",
-        "description": "API para gerenciamento de áreas, matérias e escritores do sistema AERANERD",
+        "description": "API para gerenciamento de áreas, matérias, escritores e eventos GEEK do sistema AERANERD",
         "contact": {
             "email": "contato@aeranerd.com"
         },
@@ -435,6 +435,168 @@
                 ]
             }
         },
+        "/api/events/atracoes": {
+            "get": {
+                "tags": [
+                    "Atrações"
+                ],
+                "summary": "Listar todas as atrações",
+                "operationId": "686772da3e4eba1f0b93c4e8786b2fe6",
+                "parameters": [
+                    {
+                        "name": "tipo_atracao_id",
+                        "in": "query",
+                        "description": "Filtrar por tipo de atração",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de atrações retornada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Atracao"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Atrações"
+                ],
+                "summary": "Criar uma nova atração",
+                "operationId": "0597296404a6900345f3aa31cfcdf015",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AtracaoRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Atração criada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Atracao"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/events/atracoes/{id}": {
+            "get": {
+                "tags": [
+                    "Atrações"
+                ],
+                "summary": "Exibir detalhes de uma atração específica",
+                "operationId": "265d55010a3ffa1654faa5d713b1f4e4",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID da atração",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detalhes da atração",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Atracao"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Atração não encontrada"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Atrações"
+                ],
+                "summary": "Atualizar uma atração existente",
+                "operationId": "47181b62eedf279e8894df6166eaf164",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID da atração",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AtracaoRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Atração atualizada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Atracao"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Atrações"
+                ],
+                "summary": "Remover uma atração",
+                "operationId": "fecf462f84437492344e885b909e36bf",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID da atração",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Atração removida com sucesso"
+                    }
+                }
+            }
+        },
         "/login": {
             "post": {
                 "tags": [
@@ -598,6 +760,358 @@
                                 }
                             }
                         }
+                    }
+                }
+            }
+        },
+        "/api/events/concursos": {
+            "get": {
+                "tags": [
+                    "Concursos"
+                ],
+                "summary": "Listar todos os concursos",
+                "operationId": "328295e541de37683b833841ec2ccf72",
+                "parameters": [
+                    {
+                        "name": "tipo_concurso_id",
+                        "in": "query",
+                        "description": "Filtrar por tipo de concurso",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de concursos retornada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Concurso"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Concursos"
+                ],
+                "summary": "Criar um novo concurso",
+                "operationId": "10daba0d67d24e49930381f082e1881c",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ConcursoRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Concurso criado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Concurso"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/events/concursos/{id}": {
+            "get": {
+                "tags": [
+                    "Concursos"
+                ],
+                "summary": "Exibir detalhes de um concurso específico",
+                "operationId": "c1738dbe1b076e0f26e2660b2565d2d1",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do concurso",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detalhes do concurso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Concurso"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Concurso não encontrado"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Concursos"
+                ],
+                "summary": "Atualizar um concurso existente",
+                "operationId": "d13491fbcbd1747a702185729cacf21c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do concurso",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ConcursoRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Concurso atualizado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Concurso"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Concursos"
+                ],
+                "summary": "Remover um concurso",
+                "operationId": "3625ee234bb9cde8293e9c502cfe7e87",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do concurso",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Concurso removido com sucesso"
+                    }
+                }
+            }
+        },
+        "/api/events": {
+            "get": {
+                "tags": [
+                    "Eventos"
+                ],
+                "summary": "Listar todos os eventos",
+                "operationId": "7fb8df3609cb7750cbae1d7bb6660909",
+                "parameters": [
+                    {
+                        "name": "cidade",
+                        "in": "query",
+                        "description": "Filtrar por cidade",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "data",
+                        "in": "query",
+                        "description": "Filtrar por data (formato: Y-m-d)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "name": "tipo_atracao",
+                        "in": "query",
+                        "description": "Filtrar por tipo de atração ID",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de eventos retornada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Evento"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Eventos"
+                ],
+                "summary": "Criar um novo evento",
+                "operationId": "1e6b7ed19f30ae00c0946cdb01d9be6e",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/EventoRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Evento criado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Evento"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Erro de validação"
+                    }
+                }
+            }
+        },
+        "/api/events/{id}": {
+            "get": {
+                "tags": [
+                    "Eventos"
+                ],
+                "summary": "Exibir detalhes de um evento específico",
+                "operationId": "f4be76f2e41b01730f728fd96ccc3ef4",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do evento",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detalhes do evento",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Evento"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Evento não encontrado"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Eventos"
+                ],
+                "summary": "Atualizar um evento existente",
+                "operationId": "f2104cffd131ce3250910d5ad57526f1",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do evento",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/EventoRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Evento atualizado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Evento"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Evento não encontrado"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Eventos"
+                ],
+                "summary": "Remover um evento",
+                "operationId": "e07019400ae97b1455564a637ccb90f6",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do evento",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Evento removido com sucesso"
+                    },
+                    "404": {
+                        "description": "Evento não encontrado"
                     }
                 }
             }
@@ -2740,6 +3254,304 @@
     },
     "components": {
         "schemas": {
+            "Atracao": {
+                "title": "Atração",
+                "required": [
+                    "nome",
+                    "tipo_atracao_id"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "nome": {
+                        "type": "string",
+                        "example": "Banda Anime Rock"
+                    },
+                    "tipo_atracao_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "link_foto": {
+                        "type": "string",
+                        "example": "https://example.com/banda.jpg"
+                    },
+                    "link_instagram": {
+                        "type": "string",
+                        "example": "https://instagram.com/banda"
+                    },
+                    "link_perfil": {
+                        "type": "string",
+                        "example": "https://example.com/perfil"
+                    },
+                    "descricao": {
+                        "type": "string",
+                        "example": "Banda especializada em covers de animes"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "AtracaoRequest": {
+                "required": [
+                    "nome",
+                    "tipo_atracao_id"
+                ],
+                "properties": {
+                    "nome": {
+                        "type": "string",
+                        "example": "Banda Anime Rock"
+                    },
+                    "tipo_atracao_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "link_foto": {
+                        "type": "string",
+                        "example": "https://example.com/banda.jpg"
+                    },
+                    "link_instagram": {
+                        "type": "string",
+                        "example": "https://instagram.com/banda"
+                    },
+                    "link_perfil": {
+                        "type": "string",
+                        "example": "https://example.com/perfil"
+                    },
+                    "descricao": {
+                        "type": "string",
+                        "example": "Banda especializada em covers de animes"
+                    }
+                },
+                "type": "object"
+            },
+            "Concurso": {
+                "title": "Concurso",
+                "required": [
+                    "nome",
+                    "tipo_concurso_id"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "nome": {
+                        "type": "string",
+                        "example": "Concurso de Cosplay"
+                    },
+                    "tipo_concurso_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "link_foto": {
+                        "type": "string",
+                        "example": "https://example.com/concurso.jpg"
+                    },
+                    "descricao": {
+                        "type": "string",
+                        "example": "Melhor cosplay do evento"
+                    },
+                    "datas_horas": {
+                        "type": "string",
+                        "example": "15/06/2026 às 14h - Palco Principal"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "ConcursoRequest": {
+                "required": [
+                    "nome",
+                    "tipo_concurso_id"
+                ],
+                "properties": {
+                    "nome": {
+                        "type": "string",
+                        "example": "Concurso de Cosplay"
+                    },
+                    "tipo_concurso_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "link_foto": {
+                        "type": "string",
+                        "example": "https://example.com/concurso.jpg"
+                    },
+                    "descricao": {
+                        "type": "string",
+                        "example": "Melhor cosplay do evento"
+                    },
+                    "datas_horas": {
+                        "type": "string",
+                        "example": "15/06/2026 às 14h - Palco Principal"
+                    }
+                },
+                "type": "object"
+            },
+            "Evento": {
+                "title": "Evento",
+                "required": [
+                    "nome",
+                    "descricao"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "nome": {
+                        "type": "string",
+                        "example": "Anime Festival 2026"
+                    },
+                    "descricao": {
+                        "type": "string",
+                        "example": "O maior evento de anime do Brasil"
+                    },
+                    "realizacao": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-06-15 10:00:00"
+                    },
+                    "link_foto": {
+                        "type": "string",
+                        "example": "https://example.com/foto.jpg"
+                    },
+                    "link_logo": {
+                        "type": "string",
+                        "example": "https://example.com/logo.png"
+                    },
+                    "link_site": {
+                        "type": "string",
+                        "example": "https://animefestival.com"
+                    },
+                    "link_instagram": {
+                        "type": "string",
+                        "example": "https://instagram.com/animefestival"
+                    },
+                    "link_video": {
+                        "type": "string",
+                        "example": "https://youtube.com/watch?v=xxx"
+                    },
+                    "link_x": {
+                        "type": "string",
+                        "example": "https://x.com/animefestival"
+                    },
+                    "link_tiktok": {
+                        "type": "string",
+                        "example": "https://tiktok.com/@animefestival"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "EventoRequest": {
+                "required": [
+                    "nome",
+                    "descricao"
+                ],
+                "properties": {
+                    "nome": {
+                        "type": "string",
+                        "example": "Anime Festival 2026"
+                    },
+                    "descricao": {
+                        "type": "string",
+                        "example": "O maior evento de anime do Brasil"
+                    },
+                    "realizacao": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-06-15 10:00:00"
+                    },
+                    "link_foto": {
+                        "type": "string",
+                        "example": "https://example.com/foto.jpg"
+                    },
+                    "link_logo": {
+                        "type": "string",
+                        "example": "https://example.com/logo.png"
+                    },
+                    "link_site": {
+                        "type": "string",
+                        "example": "https://animefestival.com"
+                    },
+                    "link_instagram": {
+                        "type": "string",
+                        "example": "https://instagram.com/animefestival"
+                    },
+                    "link_video": {
+                        "type": "string",
+                        "example": "https://youtube.com/watch?v=xxx"
+                    },
+                    "link_x": {
+                        "type": "string",
+                        "example": "https://x.com/animefestival"
+                    },
+                    "link_tiktok": {
+                        "type": "string",
+                        "example": "https://tiktok.com/@animefestival"
+                    },
+                    "agendas": {
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "data": {
+                                    "type": "string",
+                                    "format": "date",
+                                    "example": "2026-06-15"
+                                },
+                                "endereco": {
+                                    "type": "string",
+                                    "example": "Av. Paulista, 1000"
+                                },
+                                "cidade": {
+                                    "type": "string",
+                                    "example": "São Paulo"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    },
+                    "atracoes": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    "concursos": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                },
+                "type": "object"
+            },
             "Area": {
                 "title": "Area",
                 "description": "Modelo de Área",
@@ -3145,6 +3957,18 @@
         }
     },
     "tags": [
+        {
+            "name": "Atrações",
+            "description": "API Endpoints para gerenciamento de atrações"
+        },
+        {
+            "name": "Concursos",
+            "description": "API Endpoints para gerenciamento de concursos"
+        },
+        {
+            "name": "Eventos",
+            "description": "API Endpoints para gerenciamento de eventos GEEK"
+        },
         {
             "name": "Areas",
             "description": "Areas"

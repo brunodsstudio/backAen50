@@ -1,6 +1,7 @@
 // router/index.js
 import { createRouter, createWebHistory } from 'vue-router';
 import materiasRoutes from './materias.routes';
+import eventosRoutes from './eventos.routes';
 
 const routes = [
   {
@@ -13,6 +14,7 @@ const routes = [
     },
   },
   ...materiasRoutes,
+  ...eventosRoutes,
 ];
 
 const router = createRouter({

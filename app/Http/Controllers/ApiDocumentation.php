@@ -6,7 +6,7 @@ namespace App\Http\Controllers;
  * @OA\Info(
  *     title="AERANERD API",
  *     version="1.0.0",
- *     description="API para gerenciamento de áreas, matérias e escritores do sistema AERANERD",
+ *     description="API para gerenciamento de áreas, matérias, escritores e eventos GEEK do sistema AERANERD",
  *     @OA\Contact(
  *         email="contato@aeranerd.com"
  *     )

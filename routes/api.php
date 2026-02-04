@@ -9,6 +9,9 @@ use App\Http\Controllers\ImagesController;
 use App\Http\Controllers\WritersController;
 use App\Http\Controllers\VideoController;
 use App\Http\Controllers\GaleriaController;
+use App\Http\Controllers\EventoController;
+use App\Http\Controllers\AtracaoController;
+use App\Http\Controllers\ConcursoController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -85,6 +88,30 @@ Route::post('/login', [AuthController::class, 'login']);
 // Galeria routes - Acesso público
 Route::get('/Galerias/{pastaS3}/{pagina}', [GaleriaController::class, 'fetchGaleria'])
     ->where(['pagina' => '[0-9]+']);
+
+// Events routes - Acesso público
+Route::prefix('events')->group(function () {
+    // Eventos principais
+    Route::get('/', [EventoController::class, 'index']);
+    Route::post('/', [EventoController::class, 'store']);
+    Route::get('/{id}', [EventoController::class, 'show']);
+    Route::put('/{id}', [EventoController::class, 'update']);
+    Route::delete('/{id}', [EventoController::class, 'destroy']);
+
+    // Atrações
+    Route::get('/atracoes', [AtracaoController::class, 'index']);
+    Route::post('/atracoes', [AtracaoController::class, 'store']);
+    Route::get('/atracoes/{id}', [AtracaoController::class, 'show']);
+    Route::put('/atracoes/{id}', [AtracaoController::class, 'update']);
+    Route::delete('/atracoes/{id}', [AtracaoController::class, 'destroy']);
+
+    // Concursos
+    Route::get('/concursos', [ConcursoController::class, 'index']);
+    Route::post('/concursos', [ConcursoController::class, 'store']);
+    Route::get('/concursos/{id}', [ConcursoController::class, 'show']);
+    Route::put('/concursos/{id}', [ConcursoController::class, 'update']);
+    Route::delete('/concursos/{id}', [ConcursoController::class, 'destroy']);
+});
 
 Route::group([
 
