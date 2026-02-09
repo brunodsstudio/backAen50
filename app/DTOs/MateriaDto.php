@@ -84,4 +84,34 @@ class  MateriaDto
         $this->vchr_GalDir = $vchr_GalDir;
     }
 
+    public function toArray(): array
+    {
+        return [
+            'dt_post' => $this->dt_post,
+            'vchr_autor' => $this->vchr_autor,
+            'int_autor' => $this->int_autor,
+            'vchr_lide' => $this->vchr_lide,
+            'vchr_titulo' => $this->vchr_titulo,
+            'vchr_conteudo' => $this->vchr_conteudo,
+            'vchr_area' => $this->vchr_area,
+            'id_area' => $this->id_area,
+            'vchr_tags' => $this->vchr_tags,
+            'vchr_FontLink' => $this->vchr_FontLink,
+            'vchr_LinkTitulo' => $this->vchr_LinkTitulo,
+            'vchr_seoTitle' => $this->vchr_seoTitle,
+            'vchr_seoKeywords' => $this->vchr_seoKeywords,
+            'og_title' => $this->og_title,
+            'og_description' => $this->og_description,
+            'og_image' => $this->og_image,
+            'vchr_s3_storage' => $this->vchr_s3_storage,
+            'bool_onLine' => $this->bool_onLine,
+            'bool_home' => $this->bool_home,
+            'base64Format' => $this->base64Format,
+            'materiaUUID' => $this->materiaUUID,
+            'IdSocialIconTemplate' => $this->IdSocialIconTemplate,
+            'dt_alterado' => $this->dt_alterado,
+            'vchr_GalDir' => $this->vchr_GalDir,
+        ];
+    }
+
 }

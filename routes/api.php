@@ -56,6 +56,7 @@ Route::get('/materias/tags/summary', [MateriaController::class, 'getTagsSummary'
 Route::get('/materias/{materiaId}/images', [ImagesController::class, 'index']);
 Route::get('/images/{id}', [ImagesController::class, 'show']);
 Route::post('/materias/{materiaId}/images', [ImagesController::class, 'store']);
+Route::post('/materias/{materiaId}/images/featured-editor', [ImagesController::class, 'storeFeaturedEditor']);
 Route::post('/materias/{materiaId}/images/batch', [ImagesController::class, 'storeBatch']);
 Route::put('/images/{id}', [ImagesController::class, 'update']);
 Route::delete('/images/{id}', [ImagesController::class, 'destroy']);

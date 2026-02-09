@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 use App\Models\Materia;
+use Illuminate\Support\Facades\Schema;
 
 class MateriaRepository implements MateriaInterface
 {
@@ -44,12 +45,26 @@ class MateriaRepository implements MateriaInterface
 
     public function create(MateriaDto $materiaDTO)
     {
-        return Materia::create($materiaDTO);
+        $attributes = $this->filterAttributes($materiaDTO->toArray());
+        return Materia::create($attributes);
     }
 
     public function update(int $id, MateriaDto $materiaDTO)
     {
-        return Materia::find($id)->update($materiaDTO);
+        $materia = Materia::findOrFail($id);
+        $attributes = $this->filterAttributes($materiaDTO->toArray());
+        $materia->fill($attributes);
+        $materia->save();
+
+        return $materia;
+    }
+
+    private function filterAttributes(array $attributes): array
+    {
+        $table = (new Materia())->getTable();
+        $columns = Schema::getColumnListing($table);
+
+        return array_intersect_key($attributes, array_flip($columns));
     }
 
     public function delete(int $id)

@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Exception;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\File;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 use OpenApi\Attributes as OA;
 
 class ImagesController extends Controller
@@ -237,5 +240,185 @@ class ImagesController extends Controller
             Log::error('Error deleting batch images: ' . $e->getMessage());
             return response()->json(['error' => $e->getMessage()], 500);
         }
+    }
+
+    // Editor de imagem destacada (crop/flip/watermark + presets)
+    public function storeFeaturedEditor(Request $request, $materiaId)
+    {
+        $validator = Validator::make($request->all(), [
+            'image' => 'required|image|mimes:jpg,jpeg,png|max:10240',
+            'base_name' => 'required|string|max:200',
+            'crop' => 'nullable|array',
+            'crop.x' => 'nullable|numeric',
+            'crop.y' => 'nullable|numeric',
+            'crop.width' => 'nullable|numeric',
+            'crop.height' => 'nullable|numeric',
+            'flipX' => 'nullable|boolean',
+            'flipY' => 'nullable|boolean',
+            'watermark_text' => 'nullable|string|max:200',
+            'watermark_opacity' => 'nullable|numeric|min:0|max:1',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        try {
+            Materia::findOrFail($materiaId);
+
+            $baseNameRaw = $request->input('base_name');
+            $baseNameRaw = preg_replace('/\.webp$/i', '', $baseNameRaw);
+            $baseName = preg_replace('/[^A-Za-z0-9_-]/', '', $baseNameRaw);
+            if (empty($baseName)) {
+                return response()->json(['error' => 'Invalid base_name.'], 422);
+            }
+
+            $imageFile = $request->file('image');
+            $manager = new ImageManager(new Driver());
+            $image = $manager->read($imageFile->getPathname());
+
+            $crop = $request->input('crop');
+            if (is_array($crop) && isset($crop['width'], $crop['height'])) {
+                $image->crop(
+                    (int) round($crop['width']),
+                    (int) round($crop['height']),
+                    (int) round($crop['x'] ?? 0),
+                    (int) round($crop['y'] ?? 0)
+                );
+            }
+
+            if ($request->boolean('flipX')) {
+                $image->flop();
+            }
+            if ($request->boolean('flipY')) {
+                $image->flip();
+            }
+
+            $watermarkText = $request->input('watermark_text');
+            $watermarkOpacity = (float) ($request->input('watermark_opacity', 0.4));
+
+            $outputDir = base_path('../frontAen50/public/images/materias');
+            File::ensureDirectoryExists($outputDir);
+
+            $fbFilename = $baseName . '-fb.webp';
+            $mainFilename = $baseName . '-1366.webp';
+            $sliderFilename = $baseName . '-1366s.webp';
+            $thumbFilename = $baseName . '-372.webp';
+
+            $fbImage = clone $image;
+            $fbImage->resize(1920, 1080);
+            $this->applyWatermark($fbImage, $watermarkText, $watermarkOpacity);
+            $fbImage->save($outputDir . DIRECTORY_SEPARATOR . $fbFilename, quality: 90, format: 'webp');
+
+            $mainImage = clone $image;
+            $mainImage->resize(1920, 1080);
+            $this->applyWatermark($mainImage, $watermarkText, $watermarkOpacity);
+            $mainImage->save($outputDir . DIRECTORY_SEPARATOR . $mainFilename, quality: 90, format: 'webp');
+
+            $sliderImage = clone $image;
+            $sliderImage->resize(1920, 1080);
+            $this->applyWatermark($sliderImage, $watermarkText, $watermarkOpacity);
+            $sliderImage->save($outputDir . DIRECTORY_SEPARATOR . $sliderFilename, quality: 90, format: 'webp');
+
+            $thumbImage = clone $image;
+            $thumbImage->resize(372, 209);
+            $this->applyWatermark($thumbImage, $watermarkText, $watermarkOpacity);
+            $thumbImage->save($outputDir . DIRECTORY_SEPARATOR . $thumbFilename, quality: 90, format: 'webp');
+
+            // Remover imagens existentes da matéria antes de inserir novo set
+            $this->imagesService->deleteBatchByTipos($materiaId, Images::TIPOS_VALIDOS);
+
+            $baseUrl = '/images/materias/';
+
+            $imagesDTOs = [
+                new ImagemDto(
+                    int_Id: 0,
+                    vchr_ImgLink: $fbFilename,
+                    vchr_ImgThumbLink: null,
+                    int_MateriaId: (int) $materiaId,
+                    vchr_Tipo: 'Facebook_share',
+                    vchr_Descricao: 'Imagem gerada pelo editor (Facebook)',
+                    dt_Upload: now()->toDateTimeString(),
+                    vchr_HRef: $baseUrl . $fbFilename,
+                    dl_SizeW: 1920,
+                    dl_SizeH: 1080,
+                    dl_Thumb_SizeW: null,
+                    dl_Thumb_SizeH: null,
+                    int_Ordem: 0
+                ),
+                new ImagemDto(
+                    int_Id: 0,
+                    vchr_ImgLink:  $mainFilename,
+                    vchr_ImgThumbLink: null,
+                    int_MateriaId: (int) $materiaId,
+                    vchr_Tipo: 'Top_Materia',
+                    vchr_Descricao: 'Imagem gerada pelo editor (Top)',
+                    dt_Upload: now()->toDateTimeString(),
+                    vchr_HRef: $baseUrl . $mainFilename,
+                    dl_SizeW: 1920,
+                    dl_SizeH: 1080,
+                    dl_Thumb_SizeW: null,
+                    dl_Thumb_SizeH: null,
+                    int_Ordem: 0
+                ),
+                new ImagemDto(
+                    int_Id: 0,
+                    vchr_ImgLink: $sliderFilename,
+                    vchr_ImgThumbLink: null,
+                    int_MateriaId: (int) $materiaId,
+                    vchr_Tipo: 'Slider_Home',
+                    vchr_Descricao: 'Imagem gerada pelo editor (Slider)',
+                    dt_Upload: now()->toDateTimeString(),
+                    vchr_HRef: $baseUrl . $sliderFilename,
+                    dl_SizeW: 1920,
+                    dl_SizeH: 1080,
+                    dl_Thumb_SizeW: null,
+                    dl_Thumb_SizeH: null,
+                    int_Ordem: 0
+                ),
+                new ImagemDto(
+                    int_Id: 0,
+                    vchr_ImgLink: $thumbFilename,
+                    vchr_ImgThumbLink: null,
+                    int_MateriaId: (int) $materiaId,
+                    vchr_Tipo: 'Materia_home_thumb',
+                    vchr_Descricao: 'Imagem gerada pelo editor (Thumb)',
+                    dt_Upload: now()->toDateTimeString(),
+                    vchr_HRef: $baseUrl . $thumbFilename,
+                    dl_SizeW: 372,
+                    dl_SizeH: 209,
+                    dl_Thumb_SizeW: null,
+                    dl_Thumb_SizeH: null,
+                    int_Ordem: 0
+                ),
+            ];
+
+            $created = $this->imagesService->createBatch($materiaId, $imagesDTOs);
+
+            return response()->json([
+                'message' => 'Imagens geradas com sucesso',
+                'images' => $created,
+            ], 201);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'Materia not found.'], 404);
+        } catch (Exception $e) {
+            Log::error('Error creating featured images: ' . $e->getMessage());
+            return response()->json(['error' => 'Could not create featured images.'], 500);
+        }
+    }
+
+    private function applyWatermark($image, ?string $text, float $opacity = 0.4): void
+    {
+        if (!$text) {
+            return;
+        }
+
+        $opacity = max(0, min(1, $opacity));
+        $image->text($text, $image->width() - 10, $image->height() - 10, function ($font) use ($opacity) {
+            $font->color('rgba(255,255,255,' . $opacity . ')');
+            $font->size(24);
+            $font->align('right');
+            $font->valign('bottom');
+        });
     }
 }
