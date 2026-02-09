@@ -1,0 +1,3997 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "AERANERD API",
+        "description": "API para gerenciamento de áreas, matérias, escritores e eventos GEEK do sistema AERANERD",
+        "contact": {
+            "email": "contato@aeranerd.com"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "/api",
+            "description": "API Server"
+        }
+    ],
+    "paths": {
+        "/api/areas": {
+            "get": {
+                "tags": [
+                    "Areas"
+                ],
+                "summary": "Listar todas as áreas",
+                "description": "Retorna uma lista paginada de todas as áreas disponíveis ordenadas alfabeticamente",
+                "operationId": "f16518e18a005a2f966b63c0e1745342",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Número da página",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "Itens por página",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 10
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de áreas retornada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Area"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Could not retrieve areas."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Areas"
+                ],
+                "summary": "Criar uma nova área",
+                "description": "Cria uma nova área no sistema",
+                "operationId": "beeb06a4f56c4e31c8448c405163bed9",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "vchr_AreaNome"
+                                ],
+                                "properties": {
+                                    "vchr_AreaNome": {
+                                        "description": "Nome da área",
+                                        "type": "string",
+                                        "maxLength": 255,
+                                        "example": "Quadrinhos"
+                                    },
+                                    "vchr_Tag": {
+                                        "description": "Tag da área",
+                                        "type": "string",
+                                        "maxLength": 255,
+                                        "example": "comics"
+                                    },
+                                    "type": {
+                                        "description": "Tipo da área",
+                                        "type": "string",
+                                        "enum": [
+                                            "bd",
+                                            "pasta"
+                                        ],
+                                        "example": "bd"
+                                    },
+                                    "b_menu": {
+                                        "description": "Se aparece no menu",
+                                        "type": "boolean",
+                                        "example": true
+                                    },
+                                    "int_rolePermission": {
+                                        "description": "Permissão de role",
+                                        "type": "integer",
+                                        "example": 0
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Área criada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Area"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Dados de entrada inválidos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Could not create area."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/areas/{id}": {
+            "get": {
+                "tags": [
+                    "Areas"
+                ],
+                "summary": "Obter uma área específica",
+                "description": "Retorna os detalhes de uma área específica pelo ID",
+                "operationId": "d45f3822a5bdba2f44520ac32857bfb4",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID da área",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Área encontrada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Area"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Área não encontrada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Area not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Could not retrieve area."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Areas"
+                ],
+                "summary": "Atualizar uma área existente",
+                "description": "Atualiza os dados de uma área específica",
+                "operationId": "cc20a1af054acc1ea386968c8d9ba095",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID da área",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "vchr_AreaNome"
+                                ],
+                                "properties": {
+                                    "vchr_AreaNome": {
+                                        "description": "Nome da área",
+                                        "type": "string",
+                                        "maxLength": 255,
+                                        "example": "Quadrinhos"
+                                    },
+                                    "vchr_Tag": {
+                                        "description": "Tag da área",
+                                        "type": "string",
+                                        "maxLength": 255,
+                                        "example": "comics"
+                                    },
+                                    "type": {
+                                        "description": "Tipo da área",
+                                        "type": "string",
+                                        "enum": [
+                                            "bd",
+                                            "pasta"
+                                        ],
+                                        "example": "bd"
+                                    },
+                                    "b_menu": {
+                                        "description": "Se aparece no menu",
+                                        "type": "boolean",
+                                        "example": true
+                                    },
+                                    "int_rolePermission": {
+                                        "description": "Permissão de role",
+                                        "type": "integer",
+                                        "example": 0
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Área atualizada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Area"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Área não encontrada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Area not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Dados de entrada inválidos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Could not update area."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Areas"
+                ],
+                "summary": "Excluir uma área",
+                "description": "Remove uma área do sistema",
+                "operationId": "820be3b502aa09c30f43b877c1c4527e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID da área",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Área excluída com sucesso"
+                    },
+                    "404": {
+                        "description": "Área não encontrada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Area not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Could not delete area."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/events/atracoes": {
+            "get": {
+                "tags": [
+                    "Atrações"
+                ],
+                "summary": "Listar todas as atrações",
+                "operationId": "686772da3e4eba1f0b93c4e8786b2fe6",
+                "parameters": [
+                    {
+                        "name": "tipo_atracao_id",
+                        "in": "query",
+                        "description": "Filtrar por tipo de atração",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de atrações retornada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Atracao"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Atrações"
+                ],
+                "summary": "Criar uma nova atração",
+                "operationId": "0597296404a6900345f3aa31cfcdf015",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AtracaoRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Atração criada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Atracao"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/events/atracoes/{id}": {
+            "get": {
+                "tags": [
+                    "Atrações"
+                ],
+                "summary": "Exibir detalhes de uma atração específica",
+                "operationId": "265d55010a3ffa1654faa5d713b1f4e4",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID da atração",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detalhes da atração",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Atracao"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Atração não encontrada"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Atrações"
+                ],
+                "summary": "Atualizar uma atração existente",
+                "operationId": "47181b62eedf279e8894df6166eaf164",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID da atração",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AtracaoRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Atração atualizada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Atracao"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Atrações"
+                ],
+                "summary": "Remover uma atração",
+                "operationId": "fecf462f84437492344e885b909e36bf",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID da atração",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Atração removida com sucesso"
+                    }
+                }
+            }
+        },
+        "/login": {
+            "post": {
+                "tags": [
+                    "Autenticação"
+                ],
+                "summary": "Fazer login no sistema",
+                "description": "Autentica o usuário e retorna um token JWT",
+                "operationId": "2dd578ff7aba2721293dac66833b27d1",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "description": "Email do usuário",
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "password": {
+                                        "description": "Senha do usuário",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login realizado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "access_token": {
+                                            "description": "Token JWT",
+                                            "type": "string"
+                                        },
+                                        "token_type": {
+                                            "type": "string",
+                                            "example": "bearer"
+                                        },
+                                        "expires_in": {
+                                            "description": "Tempo de expiração em segundos",
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Credenciais inválidas",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Unauthorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor"
+                    }
+                }
+            }
+        },
+        "/register": {
+            "post": {
+                "tags": [
+                    "Autenticação"
+                ],
+                "summary": "Registrar novo usuário",
+                "description": "Cria uma nova conta de usuário no sistema",
+                "operationId": "0903f2e0df1a8857bee538fc055417f0",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "description": "Nome do usuário",
+                                        "type": "string",
+                                        "maxLength": 255
+                                    },
+                                    "email": {
+                                        "description": "Email do usuário",
+                                        "type": "string",
+                                        "format": "email",
+                                        "maxLength": 255
+                                    },
+                                    "password": {
+                                        "description": "Senha do usuário",
+                                        "type": "string",
+                                        "minLength": 6
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Usuário registrado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "access_token": {
+                                            "description": "Token JWT",
+                                            "type": "string"
+                                        },
+                                        "token_type": {
+                                            "type": "string",
+                                            "example": "bearer"
+                                        },
+                                        "expires_in": {
+                                            "description": "Tempo de expiração em segundos",
+                                            "type": "integer"
+                                        },
+                                        "user": {
+                                            "$ref": "#/components/schemas/User"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Dados de entrada inválidos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/events/concursos": {
+            "get": {
+                "tags": [
+                    "Concursos"
+                ],
+                "summary": "Listar todos os concursos",
+                "operationId": "328295e541de37683b833841ec2ccf72",
+                "parameters": [
+                    {
+                        "name": "tipo_concurso_id",
+                        "in": "query",
+                        "description": "Filtrar por tipo de concurso",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de concursos retornada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Concurso"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Concursos"
+                ],
+                "summary": "Criar um novo concurso",
+                "operationId": "10daba0d67d24e49930381f082e1881c",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ConcursoRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Concurso criado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Concurso"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/events/concursos/{id}": {
+            "get": {
+                "tags": [
+                    "Concursos"
+                ],
+                "summary": "Exibir detalhes de um concurso específico",
+                "operationId": "c1738dbe1b076e0f26e2660b2565d2d1",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do concurso",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detalhes do concurso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Concurso"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Concurso não encontrado"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Concursos"
+                ],
+                "summary": "Atualizar um concurso existente",
+                "operationId": "d13491fbcbd1747a702185729cacf21c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do concurso",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ConcursoRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Concurso atualizado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Concurso"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Concursos"
+                ],
+                "summary": "Remover um concurso",
+                "operationId": "3625ee234bb9cde8293e9c502cfe7e87",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do concurso",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Concurso removido com sucesso"
+                    }
+                }
+            }
+        },
+        "/api/events": {
+            "get": {
+                "tags": [
+                    "Eventos"
+                ],
+                "summary": "Listar todos os eventos",
+                "operationId": "7fb8df3609cb7750cbae1d7bb6660909",
+                "parameters": [
+                    {
+                        "name": "cidade",
+                        "in": "query",
+                        "description": "Filtrar por cidade",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "data",
+                        "in": "query",
+                        "description": "Filtrar por data (formato: Y-m-d)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "name": "tipo_atracao",
+                        "in": "query",
+                        "description": "Filtrar por tipo de atração ID",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de eventos retornada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Evento"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Eventos"
+                ],
+                "summary": "Criar um novo evento",
+                "operationId": "1e6b7ed19f30ae00c0946cdb01d9be6e",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/EventoRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Evento criado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Evento"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Erro de validação"
+                    }
+                }
+            }
+        },
+        "/api/events/{id}": {
+            "get": {
+                "tags": [
+                    "Eventos"
+                ],
+                "summary": "Exibir detalhes de um evento específico",
+                "operationId": "f4be76f2e41b01730f728fd96ccc3ef4",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do evento",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detalhes do evento",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Evento"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Evento não encontrado"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Eventos"
+                ],
+                "summary": "Atualizar um evento existente",
+                "operationId": "f2104cffd131ce3250910d5ad57526f1",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do evento",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/EventoRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Evento atualizado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Evento"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Evento não encontrado"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Eventos"
+                ],
+                "summary": "Remover um evento",
+                "operationId": "e07019400ae97b1455564a637ccb90f6",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do evento",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Evento removido com sucesso"
+                    },
+                    "404": {
+                        "description": "Evento não encontrado"
+                    }
+                }
+            }
+        },
+        "/api/Galerias/{PastaS3}/{Pagina}": {
+            "get": {
+                "tags": [
+                    "Galeria"
+                ],
+                "summary": "Buscar imagens do S3 por pasta",
+                "description": "Retorna todas as imagens salvas em uma pasta específica do bucket S3 da AWS com paginação",
+                "operationId": "06a9f9feb9101aa7f50d323f410fd521",
+                "parameters": [
+                    {
+                        "name": "PastaS3",
+                        "in": "path",
+                        "description": "Nome da pasta no S3 (ex: evento-cosplay-2024)",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "Pagina",
+                        "in": "path",
+                        "description": "Número da página",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1,
+                            "minimum": 1
+                        }
+                    },
+                    {
+                        "name": "quantidadePorPagina",
+                        "in": "query",
+                        "description": "Quantidade de itens por página",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 25,
+                            "maximum": 100,
+                            "minimum": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de imagens retornada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "foto": {
+                                                        "type": "string",
+                                                        "example": "https://aeranerd.s3.sa-east-1.amazonaws.com/images/galerias/evento-cosplay-2024/foto001.jpg"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "pagination": {
+                                            "properties": {
+                                                "pagina_atual": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "itens_por_pagina": {
+                                                    "type": "integer",
+                                                    "example": 25
+                                                },
+                                                "total_itens": {
+                                                    "type": "integer",
+                                                    "example": 150
+                                                },
+                                                "total_paginas": {
+                                                    "type": "integer",
+                                                    "example": 6
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Não autenticado - Token inválido ou ausente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Pasta não encontrada no S3",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Nenhuma imagem encontrada na pasta especificada"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Parâmetros inválidos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Parâmetros inválidos"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Erro ao buscar imagens do S3"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/materias": {
+            "get": {
+                "tags": [
+                    "Matérias"
+                ],
+                "summary": "Listar todas as matérias",
+                "description": "Retorna uma lista paginada de todas as matérias disponíveis",
+                "operationId": "3e87d7d7e4512cf8d0c2208a27ab32cd",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Número da página",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "Itens por página",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 10
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de matérias retornada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Materia"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Matérias"
+                ],
+                "summary": "Criar uma nova matéria",
+                "description": "Cria uma nova matéria no sistema",
+                "operationId": "9eb7e9f92071de08e0b9c7bdcd49b6cd",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "vchr_titulo",
+                                    "vchr_conteudo"
+                                ],
+                                "properties": {
+                                    "dt_post": {
+                                        "description": "Data de publicação",
+                                        "type": "string",
+                                        "format": "date-time"
+                                    },
+                                    "vchr_autor": {
+                                        "description": "Nome do autor",
+                                        "type": "string"
+                                    },
+                                    "int_autor": {
+                                        "description": "ID do autor",
+                                        "type": "integer"
+                                    },
+                                    "vchr_lide": {
+                                        "description": "Lide da matéria",
+                                        "type": "string"
+                                    },
+                                    "vchr_titulo": {
+                                        "description": "Título da matéria",
+                                        "type": "string"
+                                    },
+                                    "vchr_conteudo": {
+                                        "description": "Conteúdo da matéria",
+                                        "type": "string"
+                                    },
+                                    "vchr_area": {
+                                        "description": "Nome da área",
+                                        "type": "string"
+                                    },
+                                    "id_area": {
+                                        "description": "ID da área",
+                                        "type": "integer"
+                                    },
+                                    "vchr_tags": {
+                                        "description": "Tags da matéria",
+                                        "type": "string"
+                                    },
+                                    "vchr_FontLink": {
+                                        "description": "Link da fonte",
+                                        "type": "string"
+                                    },
+                                    "vchr_LinkTitulo": {
+                                        "description": "Título do link",
+                                        "type": "string"
+                                    },
+                                    "vchr_seoTitle": {
+                                        "description": "Título SEO",
+                                        "type": "string"
+                                    },
+                                    "vchr_seoKeywords": {
+                                        "description": "Palavras-chave SEO",
+                                        "type": "string"
+                                    },
+                                    "og_title": {
+                                        "description": "Título Open Graph",
+                                        "type": "string"
+                                    },
+                                    "og_description": {
+                                        "description": "Descrição Open Graph",
+                                        "type": "string"
+                                    },
+                                    "og_image": {
+                                        "description": "Imagem Open Graph",
+                                        "type": "string"
+                                    },
+                                    "vchr_s3_storage": {
+                                        "description": "Armazenamento S3",
+                                        "type": "string"
+                                    },
+                                    "bool_onLine": {
+                                        "description": "Se está online",
+                                        "type": "boolean"
+                                    },
+                                    "bool_home": {
+                                        "description": "Se aparece na home",
+                                        "type": "boolean"
+                                    },
+                                    "base64Format": {
+                                        "description": "Formato base64",
+                                        "type": "boolean"
+                                    },
+                                    "materiaUUID": {
+                                        "description": "UUID da matéria",
+                                        "type": "string"
+                                    },
+                                    "IdSocialIconTemplate": {
+                                        "description": "ID do template de ícone social",
+                                        "type": "integer"
+                                    },
+                                    "vchr_GalDir": {
+                                        "description": "Diretório da galeria",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Matéria criada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Materia"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Dados de entrada inválidos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Could not create materia."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/materias/{id}": {
+            "get": {
+                "tags": [
+                    "Matérias"
+                ],
+                "summary": "Obter uma matéria específica",
+                "description": "Retorna os detalhes de uma matéria específica pelo ID",
+                "operationId": "7d890d7d9d28b94eb6034c430caf4109",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID da matéria",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Matéria encontrada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Materia"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Matéria não encontrada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Materia not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Could not retrieve materia."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Matérias"
+                ],
+                "summary": "Atualizar uma matéria",
+                "description": "Atualiza os dados de uma matéria existente",
+                "operationId": "1248df134213e2bdcd3571407b6581af",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID da matéria",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "dt_post": {
+                                        "description": "Data de publicação",
+                                        "type": "string",
+                                        "format": "date-time"
+                                    },
+                                    "vchr_autor": {
+                                        "description": "Nome do autor",
+                                        "type": "string"
+                                    },
+                                    "int_autor": {
+                                        "description": "ID do autor",
+                                        "type": "integer"
+                                    },
+                                    "vchr_lide": {
+                                        "description": "Lide da matéria",
+                                        "type": "string"
+                                    },
+                                    "vchr_titulo": {
+                                        "description": "Título da matéria",
+                                        "type": "string"
+                                    },
+                                    "vchr_conteudo": {
+                                        "description": "Conteúdo da matéria",
+                                        "type": "string"
+                                    },
+                                    "vchr_area": {
+                                        "description": "Nome da área",
+                                        "type": "string"
+                                    },
+                                    "id_area": {
+                                        "description": "ID da área",
+                                        "type": "integer"
+                                    },
+                                    "vchr_tags": {
+                                        "description": "Tags da matéria",
+                                        "type": "string"
+                                    },
+                                    "bool_onLine": {
+                                        "description": "Se está online",
+                                        "type": "boolean"
+                                    },
+                                    "bool_home": {
+                                        "description": "Se aparece na home",
+                                        "type": "boolean"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Matéria atualizada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Materia"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Matéria não encontrada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Materia not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Dados de entrada inválidos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Could not update materia."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Matérias"
+                ],
+                "summary": "Deletar uma matéria",
+                "description": "Remove uma matéria do sistema",
+                "operationId": "8a8cc6baa4259fcaf4d3ba8258f5c14d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID da matéria",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Matéria deletada com sucesso"
+                    },
+                    "404": {
+                        "description": "Matéria não encontrada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Materia not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Could not delete materia."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/MateriasHome": {
+            "get": {
+                "tags": [
+                    "Matérias"
+                ],
+                "summary": "Listar matérias para a home",
+                "description": "Retorna matérias ativas (bool_home=1 e bool_onLine=1) ordenadas por data de criação descendente, com suas respectivas imagens. Campos retornados das imagens: vchr_Tipo e vchr_HRef",
+                "operationId": "a0c96eb73b83dc8c1df73e8917d83827",
+                "parameters": [
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Limite de registros a retornar (padrão: 20)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 20,
+                            "example": 20
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de matérias da home retornada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "vchr_titulo": {
+                                                "type": "string",
+                                                "example": "Título da Matéria"
+                                            },
+                                            "vchr_lide": {
+                                                "type": "string",
+                                                "example": "Lide da matéria"
+                                            },
+                                            "vchr_area": {
+                                                "type": "string",
+                                                "example": "Tecnologia"
+                                            },
+                                            "created_at": {
+                                                "type": "string",
+                                                "format": "date-time",
+                                                "example": "2026-01-16T10:30:00Z"
+                                            },
+                                            "images": {
+                                                "type": "array",
+                                                "items": {
+                                                    "properties": {
+                                                        "int_Id": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "vchr_Tipo": {
+                                                            "type": "string",
+                                                            "example": "Slider_Home"
+                                                        },
+                                                        "vchr_HRef": {
+                                                            "type": "string",
+                                                            "example": "https://example.com/image.jpg"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Could not retrieve materias home."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/MateriasCategoria": {
+            "get": {
+                "tags": [
+                    "Matérias"
+                ],
+                "summary": "Listar matérias por categoria com paginação",
+                "description": "Retorna matérias ativas (bool_onLine=1) filtradas por categoria (id_area), com paginação e imagens do tipo 'Top_Materia'. Ordenação padrão por data de criação descendente.",
+                "operationId": "9c04514ded0ea7ce756011f94285a8ee",
+                "parameters": [
+                    {
+                        "name": "id_area",
+                        "in": "query",
+                        "description": "ID da área/categoria (obrigatório)",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Número da página (padrão: 1)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1,
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "Itens por página (padrão: 10)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 10,
+                            "example": 10
+                        }
+                    },
+                    {
+                        "name": "orderBy",
+                        "in": "query",
+                        "description": "Campo para ordenação (opções: created_at, dt_post, vchr_titulo, vchr_autor. Padrão: created_at)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "created_at",
+                            "enum": [
+                                "created_at",
+                                "dt_post",
+                                "vchr_titulo",
+                                "vchr_autor"
+                            ],
+                            "example": "created_at"
+                        }
+                    },
+                    {
+                        "name": "orderDirection",
+                        "in": "query",
+                        "description": "Direção da ordenação (opções: asc, desc. Padrão: desc)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "desc",
+                            "enum": [
+                                "asc",
+                                "desc"
+                            ],
+                            "example": "desc"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista paginada de matérias da categoria retornada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "current_page": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "per_page": {
+                                            "type": "integer",
+                                            "example": 10
+                                        },
+                                        "total": {
+                                            "type": "integer",
+                                            "example": 45
+                                        },
+                                        "last_page": {
+                                            "type": "integer",
+                                            "example": 5
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "dt_post": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2026-01-16T10:30:00Z"
+                                                    },
+                                                    "vchr_autor": {
+                                                        "type": "string",
+                                                        "example": "João Silva"
+                                                    },
+                                                    "int_autor": {
+                                                        "type": "integer",
+                                                        "example": 5
+                                                    },
+                                                    "vchr_titulo": {
+                                                        "type": "string",
+                                                        "example": "Título da Matéria"
+                                                    },
+                                                    "vchr_lide": {
+                                                        "type": "string",
+                                                        "example": "Lide da matéria"
+                                                    },
+                                                    "vchr_area": {
+                                                        "type": "string",
+                                                        "example": "Tecnologia"
+                                                    },
+                                                    "id_area": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "vchr_tags": {
+                                                        "type": "string",
+                                                        "example": "tag1,tag2,tag3"
+                                                    },
+                                                    "vchr_LinkTitulo": {
+                                                        "type": "string",
+                                                        "example": "titulo-da-materia"
+                                                    },
+                                                    "bool_onLine": {
+                                                        "type": "boolean",
+                                                        "example": true
+                                                    },
+                                                    "bool_home": {
+                                                        "type": "boolean",
+                                                        "example": false
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2026-01-16T10:30:00Z"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2026-01-16T11:00:00Z"
+                                                    },
+                                                    "images": {
+                                                        "description": "Imagens filtradas pelo tipo 'Top_Materia'",
+                                                        "type": "array",
+                                                        "items": {
+                                                            "properties": {
+                                                                "int_Id": {
+                                                                    "type": "integer",
+                                                                    "example": 1
+                                                                },
+                                                                "int_MateriaId": {
+                                                                    "type": "integer",
+                                                                    "example": 1
+                                                                },
+                                                                "vchr_Tipo": {
+                                                                    "type": "string",
+                                                                    "example": "Top_Materia"
+                                                                },
+                                                                "vchr_HRef": {
+                                                                    "type": "string",
+                                                                    "example": "https://example.com/image.jpg"
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        }
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Parâmetro obrigatório ausente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "O parâmetro id_area é obrigatório."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Could not retrieve materias by category."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/materias/tags/summary": {
+            "get": {
+                "tags": [
+                    "Matérias"
+                ],
+                "summary": "Resumo das tags mais usadas",
+                "description": "Retorna um resumo das tags mais utilizadas nas últimas matérias publicadas",
+                "operationId": "94c574257e586c12d40466e26f51c68c",
+                "parameters": [
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Número de matérias a analisar (padrão: 50)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 50
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Resumo de tags retornado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "tag": {
+                                                        "type": "string",
+                                                        "example": "Marvel"
+                                                    },
+                                                    "count": {
+                                                        "type": "integer",
+                                                        "example": 15
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "total_tags": {
+                                            "type": "integer",
+                                            "example": 25
+                                        },
+                                        "materias_analyzed": {
+                                            "type": "integer",
+                                            "example": 50
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/videos": {
+            "get": {
+                "tags": [
+                    "Vídeos"
+                ],
+                "summary": "Listar todos os vídeos",
+                "description": "Retorna uma lista paginada de todos os vídeos disponíveis",
+                "operationId": "91a3a5e7add32d9ee4fb5ad638e10d66",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Número da página",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "Itens por página",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 10
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de vídeos retornada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Video"
+                                            }
+                                        },
+                                        "current_page": {
+                                            "type": "integer"
+                                        },
+                                        "per_page": {
+                                            "type": "integer"
+                                        },
+                                        "total": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Vídeos"
+                ],
+                "summary": "Criar um novo vídeo",
+                "description": "Cria um novo vídeo no sistema",
+                "operationId": "de7b3eb3f2fce49c828dae36fff21116",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "vchr_Titulo",
+                                    "vchr_Description",
+                                    "vchr_YTThumbDefault",
+                                    "vchr_YTThumbMedium",
+                                    "vchr_YTThumbHigh",
+                                    "vchr_Embed",
+                                    "vchr_ChannelId",
+                                    "vchr_tags"
+                                ],
+                                "properties": {
+                                    "int_IdMateria": {
+                                        "description": "ID da matéria associada",
+                                        "type": "integer"
+                                    },
+                                    "vchr_VideoId": {
+                                        "description": "ID do vídeo no YouTube",
+                                        "type": "string",
+                                        "maxLength": 50
+                                    },
+                                    "vchr_LinkVideo": {
+                                        "description": "Link do vídeo",
+                                        "type": "string",
+                                        "maxLength": 300
+                                    },
+                                    "int_IdArea": {
+                                        "description": "ID da área",
+                                        "type": "integer"
+                                    },
+                                    "vchr_Titulo": {
+                                        "description": "Título do vídeo",
+                                        "type": "string",
+                                        "maxLength": 400
+                                    },
+                                    "vchr_Description": {
+                                        "description": "Descrição do vídeo",
+                                        "type": "string"
+                                    },
+                                    "vchr_YTThumbDefault": {
+                                        "description": "Thumbnail padrão do YouTube",
+                                        "type": "string",
+                                        "maxLength": 300
+                                    },
+                                    "vchr_YTThumbMedium": {
+                                        "description": "Thumbnail média do YouTube",
+                                        "type": "string",
+                                        "maxLength": 300
+                                    },
+                                    "vchr_YTThumbHigh": {
+                                        "description": "Thumbnail alta do YouTube",
+                                        "type": "string",
+                                        "maxLength": 300
+                                    },
+                                    "vchr_Embed": {
+                                        "description": "Código embed do vídeo",
+                                        "type": "string"
+                                    },
+                                    "vchr_ChannelId": {
+                                        "description": "ID do canal do YouTube",
+                                        "type": "string",
+                                        "maxLength": 50
+                                    },
+                                    "vchr_tags": {
+                                        "description": "Tags do vídeo",
+                                        "type": "string",
+                                        "maxLength": 400
+                                    },
+                                    "dt_Publicado": {
+                                        "description": "Data de publicação no YouTube",
+                                        "type": "string",
+                                        "format": "date-time"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Vídeo criado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Video"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Dados de entrada inválidos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/videos/{id}": {
+            "get": {
+                "tags": [
+                    "Vídeos"
+                ],
+                "summary": "Buscar vídeo por ID",
+                "description": "Retorna um vídeo específico pelo seu ID",
+                "operationId": "039b82b6697daed032f32c1a5dfbb2d4",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do vídeo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Vídeo encontrado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Video"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Vídeo não encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Vídeos"
+                ],
+                "summary": "Atualizar um vídeo",
+                "description": "Atualiza os dados de um vídeo existente",
+                "operationId": "b069962b1c673892a9bd6e130975f8fb",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do vídeo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "int_IdMateria": {
+                                        "description": "ID da matéria associada",
+                                        "type": "integer"
+                                    },
+                                    "vchr_VideoId": {
+                                        "description": "ID do vídeo no YouTube",
+                                        "type": "string",
+                                        "maxLength": 50
+                                    },
+                                    "vchr_LinkVideo": {
+                                        "description": "Link do vídeo",
+                                        "type": "string",
+                                        "maxLength": 300
+                                    },
+                                    "int_IdArea": {
+                                        "description": "ID da área",
+                                        "type": "integer"
+                                    },
+                                    "vchr_Titulo": {
+                                        "description": "Título do vídeo",
+                                        "type": "string",
+                                        "maxLength": 400
+                                    },
+                                    "vchr_Description": {
+                                        "description": "Descrição do vídeo",
+                                        "type": "string"
+                                    },
+                                    "vchr_YTThumbDefault": {
+                                        "description": "Thumbnail padrão",
+                                        "type": "string",
+                                        "maxLength": 300
+                                    },
+                                    "vchr_YTThumbMedium": {
+                                        "description": "Thumbnail média",
+                                        "type": "string",
+                                        "maxLength": 300
+                                    },
+                                    "vchr_YTThumbHigh": {
+                                        "description": "Thumbnail alta",
+                                        "type": "string",
+                                        "maxLength": 300
+                                    },
+                                    "vchr_Embed": {
+                                        "description": "Código embed",
+                                        "type": "string"
+                                    },
+                                    "vchr_ChannelId": {
+                                        "description": "ID do canal",
+                                        "type": "string",
+                                        "maxLength": 50
+                                    },
+                                    "vchr_tags": {
+                                        "description": "Tags",
+                                        "type": "string",
+                                        "maxLength": 400
+                                    },
+                                    "dt_Publicado": {
+                                        "description": "Data de publicação",
+                                        "type": "string",
+                                        "format": "date-time"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Vídeo atualizado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Video"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Vídeo não encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Dados de entrada inválidos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Vídeos"
+                ],
+                "summary": "Deletar um vídeo",
+                "description": "Remove um vídeo do sistema",
+                "operationId": "889cee044a8d2f628ee67ddb759c77d2",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do vídeo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Vídeo deletado com sucesso"
+                    },
+                    "404": {
+                        "description": "Vídeo não encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/videos/youtube/{videoId}": {
+            "get": {
+                "tags": [
+                    "Vídeos"
+                ],
+                "summary": "Buscar vídeo por ID do YouTube",
+                "description": "Retorna um vídeo específico pelo seu ID do YouTube",
+                "operationId": "f74436dcd829f942ac4dda281eed5292",
+                "parameters": [
+                    {
+                        "name": "videoId",
+                        "in": "path",
+                        "description": "ID do vídeo no YouTube",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Vídeo encontrado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Video"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Vídeo não encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/videos/materia/{materiaId}": {
+            "get": {
+                "tags": [
+                    "Vídeos"
+                ],
+                "summary": "Listar vídeos por matéria",
+                "description": "Retorna todos os vídeos associados a uma matéria específica",
+                "operationId": "5f0fc69823ed22e0fa8cda4c844681a4",
+                "parameters": [
+                    {
+                        "name": "materiaId",
+                        "in": "path",
+                        "description": "ID da matéria",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de vídeos retornada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Video"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/videos/area/{areaId}": {
+            "get": {
+                "tags": [
+                    "Vídeos"
+                ],
+                "summary": "Listar vídeos por área",
+                "description": "Retorna todos os vídeos de uma área específica com paginação",
+                "operationId": "9d672e8be13102283f6739c84108a900",
+                "parameters": [
+                    {
+                        "name": "areaId",
+                        "in": "path",
+                        "description": "ID da área",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "Itens por página",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 10
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de vídeos retornada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Video"
+                                            }
+                                        },
+                                        "current_page": {
+                                            "type": "integer"
+                                        },
+                                        "per_page": {
+                                            "type": "integer"
+                                        },
+                                        "total": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/videos/home": {
+            "get": {
+                "tags": [
+                    "Vídeos"
+                ],
+                "summary": "Listar vídeos para a home",
+                "description": "Retorna os vídeos mais recentes para exibição na página inicial",
+                "operationId": "67615235453749242d1ee4c77f1c7484",
+                "parameters": [
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Número máximo de vídeos",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 20
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de vídeos retornada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Video"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/writers": {
+            "get": {
+                "tags": [
+                    "Writers"
+                ],
+                "summary": "Listar todos os escritores",
+                "description": "Retorna uma lista paginada de todos os escritores ordenados alfabeticamente",
+                "operationId": "693ac07efd933d80d003b101ae0c37c4",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Número da página",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "Itens por página",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 10
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de escritores retornada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Writer"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Writers"
+                ],
+                "summary": "Criar um novo escritor",
+                "description": "Cria um novo escritor no sistema",
+                "operationId": "c1c5a4d353407581ac6e51b544580a6c",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "vchr_Nome",
+                                    "vchr_Nick"
+                                ],
+                                "properties": {
+                                    "vchr_Nome": {
+                                        "description": "Nome completo do escritor",
+                                        "type": "string",
+                                        "maxLength": 100,
+                                        "example": "João Silva"
+                                    },
+                                    "vchr_Nick": {
+                                        "description": "Apelido/Nick do escritor",
+                                        "type": "string",
+                                        "maxLength": 50,
+                                        "example": "joaosilva"
+                                    },
+                                    "long_Card": {
+                                        "description": "Biografia do escritor",
+                                        "type": "string",
+                                        "example": "Escritor e jornalista especializado em cultura pop"
+                                    },
+                                    "bool_Enable": {
+                                        "description": "Status de habilitação",
+                                        "type": "boolean",
+                                        "example": true
+                                    },
+                                    "vchr_LinkFoto": {
+                                        "description": "Link da foto do escritor",
+                                        "type": "string",
+                                        "maxLength": 50,
+                                        "example": "foto-joao.jpg"
+                                    },
+                                    "vchr_LinkInta": {
+                                        "description": "Link do Instagram",
+                                        "type": "string",
+                                        "maxLength": 50,
+                                        "example": "@joaosilva"
+                                    },
+                                    "vchr_Cargo": {
+                                        "description": "Cargo/Função",
+                                        "type": "string",
+                                        "maxLength": 50,
+                                        "example": "Editor"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Escritor criado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Writer"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Dados de validação inválidos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/writers/{id}": {
+            "get": {
+                "tags": [
+                    "Writers"
+                ],
+                "summary": "Obter detalhes de um escritor",
+                "description": "Retorna os detalhes de um escritor específico",
+                "operationId": "e562947f7d8759d1cb722fffb91f66c3",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do escritor",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detalhes do escritor",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Writer"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Escritor não encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Writer not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Writers"
+                ],
+                "summary": "Atualizar um escritor",
+                "description": "Atualiza os dados de um escritor existente",
+                "operationId": "e1b9e9bc794e20fabb3dd96106691e22",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do escritor",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "vchr_Nome": {
+                                        "description": "Nome completo do escritor",
+                                        "type": "string",
+                                        "maxLength": 100
+                                    },
+                                    "vchr_Nick": {
+                                        "description": "Apelido/Nick do escritor",
+                                        "type": "string",
+                                        "maxLength": 50
+                                    },
+                                    "long_Card": {
+                                        "description": "Biografia do escritor",
+                                        "type": "string"
+                                    },
+                                    "bool_Enable": {
+                                        "description": "Status de habilitação",
+                                        "type": "boolean"
+                                    },
+                                    "vchr_LinkFoto": {
+                                        "description": "Link da foto do escritor",
+                                        "type": "string",
+                                        "maxLength": 50
+                                    },
+                                    "vchr_LinkInta": {
+                                        "description": "Link do Instagram",
+                                        "type": "string",
+                                        "maxLength": 50
+                                    },
+                                    "vchr_Cargo": {
+                                        "description": "Cargo/Função",
+                                        "type": "string",
+                                        "maxLength": 50
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Escritor atualizado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Writer"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Escritor não encontrado"
+                    },
+                    "422": {
+                        "description": "Dados de validação inválidos"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Writers"
+                ],
+                "summary": "Remover um escritor",
+                "description": "Remove um escritor do sistema",
+                "operationId": "e8f386b5eba4cbf1e2aa656d20a6b906",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do escritor",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Escritor removido com sucesso"
+                    },
+                    "404": {
+                        "description": "Escritor não encontrado"
+                    },
+                    "500": {
+                        "description": "Erro ao remover escritor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Atracao": {
+                "title": "Atração",
+                "required": [
+                    "nome",
+                    "tipo_atracao_id"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "nome": {
+                        "type": "string",
+                        "example": "Banda Anime Rock"
+                    },
+                    "tipo_atracao_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "link_foto": {
+                        "type": "string",
+                        "example": "https://example.com/banda.jpg"
+                    },
+                    "link_instagram": {
+                        "type": "string",
+                        "example": "https://instagram.com/banda"
+                    },
+                    "link_perfil": {
+                        "type": "string",
+                        "example": "https://example.com/perfil"
+                    },
+                    "descricao": {
+                        "type": "string",
+                        "example": "Banda especializada em covers de animes"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "AtracaoRequest": {
+                "required": [
+                    "nome",
+                    "tipo_atracao_id"
+                ],
+                "properties": {
+                    "nome": {
+                        "type": "string",
+                        "example": "Banda Anime Rock"
+                    },
+                    "tipo_atracao_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "link_foto": {
+                        "type": "string",
+                        "example": "https://example.com/banda.jpg"
+                    },
+                    "link_instagram": {
+                        "type": "string",
+                        "example": "https://instagram.com/banda"
+                    },
+                    "link_perfil": {
+                        "type": "string",
+                        "example": "https://example.com/perfil"
+                    },
+                    "descricao": {
+                        "type": "string",
+                        "example": "Banda especializada em covers de animes"
+                    }
+                },
+                "type": "object"
+            },
+            "Concurso": {
+                "title": "Concurso",
+                "required": [
+                    "nome",
+                    "tipo_concurso_id"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "nome": {
+                        "type": "string",
+                        "example": "Concurso de Cosplay"
+                    },
+                    "tipo_concurso_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "link_foto": {
+                        "type": "string",
+                        "example": "https://example.com/concurso.jpg"
+                    },
+                    "descricao": {
+                        "type": "string",
+                        "example": "Melhor cosplay do evento"
+                    },
+                    "datas_horas": {
+                        "type": "string",
+                        "example": "15/06/2026 às 14h - Palco Principal"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "ConcursoRequest": {
+                "required": [
+                    "nome",
+                    "tipo_concurso_id"
+                ],
+                "properties": {
+                    "nome": {
+                        "type": "string",
+                        "example": "Concurso de Cosplay"
+                    },
+                    "tipo_concurso_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "link_foto": {
+                        "type": "string",
+                        "example": "https://example.com/concurso.jpg"
+                    },
+                    "descricao": {
+                        "type": "string",
+                        "example": "Melhor cosplay do evento"
+                    },
+                    "datas_horas": {
+                        "type": "string",
+                        "example": "15/06/2026 às 14h - Palco Principal"
+                    }
+                },
+                "type": "object"
+            },
+            "Evento": {
+                "title": "Evento",
+                "required": [
+                    "nome",
+                    "descricao"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "nome": {
+                        "type": "string",
+                        "example": "Anime Festival 2026"
+                    },
+                    "descricao": {
+                        "type": "string",
+                        "example": "O maior evento de anime do Brasil"
+                    },
+                    "realizacao": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-06-15 10:00:00"
+                    },
+                    "link_foto": {
+                        "type": "string",
+                        "example": "https://example.com/foto.jpg"
+                    },
+                    "link_logo": {
+                        "type": "string",
+                        "example": "https://example.com/logo.png"
+                    },
+                    "link_site": {
+                        "type": "string",
+                        "example": "https://animefestival.com"
+                    },
+                    "link_instagram": {
+                        "type": "string",
+                        "example": "https://instagram.com/animefestival"
+                    },
+                    "link_video": {
+                        "type": "string",
+                        "example": "https://youtube.com/watch?v=xxx"
+                    },
+                    "link_x": {
+                        "type": "string",
+                        "example": "https://x.com/animefestival"
+                    },
+                    "link_tiktok": {
+                        "type": "string",
+                        "example": "https://tiktok.com/@animefestival"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "EventoRequest": {
+                "required": [
+                    "nome",
+                    "descricao"
+                ],
+                "properties": {
+                    "nome": {
+                        "type": "string",
+                        "example": "Anime Festival 2026"
+                    },
+                    "descricao": {
+                        "type": "string",
+                        "example": "O maior evento de anime do Brasil"
+                    },
+                    "realizacao": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-06-15 10:00:00"
+                    },
+                    "link_foto": {
+                        "type": "string",
+                        "example": "https://example.com/foto.jpg"
+                    },
+                    "link_logo": {
+                        "type": "string",
+                        "example": "https://example.com/logo.png"
+                    },
+                    "link_site": {
+                        "type": "string",
+                        "example": "https://animefestival.com"
+                    },
+                    "link_instagram": {
+                        "type": "string",
+                        "example": "https://instagram.com/animefestival"
+                    },
+                    "link_video": {
+                        "type": "string",
+                        "example": "https://youtube.com/watch?v=xxx"
+                    },
+                    "link_x": {
+                        "type": "string",
+                        "example": "https://x.com/animefestival"
+                    },
+                    "link_tiktok": {
+                        "type": "string",
+                        "example": "https://tiktok.com/@animefestival"
+                    },
+                    "agendas": {
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "data": {
+                                    "type": "string",
+                                    "format": "date",
+                                    "example": "2026-06-15"
+                                },
+                                "endereco": {
+                                    "type": "string",
+                                    "example": "Av. Paulista, 1000"
+                                },
+                                "cidade": {
+                                    "type": "string",
+                                    "example": "São Paulo"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    },
+                    "atracoes": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    "concursos": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "Area": {
+                "title": "Area",
+                "description": "Modelo de Área",
+                "properties": {
+                    "int_Id": {
+                        "description": "ID da área",
+                        "type": "integer"
+                    },
+                    "vchr_AreaNome": {
+                        "description": "Nome da área",
+                        "type": "string"
+                    },
+                    "vchr_Tag": {
+                        "description": "Tag da área",
+                        "type": "string"
+                    },
+                    "type": {
+                        "description": "Tipos da área",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "b_menu": {
+                        "description": "Se aparece no menu",
+                        "type": "boolean"
+                    },
+                    "int_rolePermission": {
+                        "description": "Permissão de role",
+                        "type": "integer"
+                    },
+                    "created_at": {
+                        "description": "Data de criação",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "Data de atualização",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "Image": {
+                "title": "Image",
+                "description": "Modelo de Imagem de Matéria",
+                "properties": {
+                    "int_Id": {
+                        "description": "ID da imagem",
+                        "type": "integer"
+                    },
+                    "vchr_ImgLink": {
+                        "description": "URL da imagem original",
+                        "type": "string"
+                    },
+                    "vchr_ImgThumbLink": {
+                        "description": "URL da thumbnail",
+                        "type": "string"
+                    },
+                    "int_MateriaId": {
+                        "description": "ID da matéria",
+                        "type": "integer"
+                    },
+                    "vchr_Tipo": {
+                        "description": "Tipo de imagem",
+                        "type": "string",
+                        "enum": [
+                            "Slider_Home",
+                            "Facebook_share",
+                            "Materia_home_thumb",
+                            "Top_Materia"
+                        ]
+                    },
+                    "vchr_Descricao": {
+                        "description": "Descrição da imagem",
+                        "type": "string"
+                    },
+                    "dt_Upload": {
+                        "description": "Data de upload",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "vchr_HRef": {
+                        "description": "Link de referência",
+                        "type": "string"
+                    },
+                    "dl_SizeW": {
+                        "description": "Largura da imagem",
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "dl_SizeH": {
+                        "description": "Altura da imagem",
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "dl_Thumb_SizeW": {
+                        "description": "Largura da thumbnail",
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "dl_Thumb_SizeH": {
+                        "description": "Altura da thumbnail",
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "int_Ordem": {
+                        "description": "Ordem de exibição",
+                        "type": "integer"
+                    },
+                    "created_at": {
+                        "description": "Data de criação",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "Data de atualização",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "Materia": {
+                "title": "Materia",
+                "description": "Modelo de Matéria",
+                "properties": {
+                    "id": {
+                        "description": "ID da matéria",
+                        "type": "integer"
+                    },
+                    "dt_post": {
+                        "description": "Data de publicação",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "vchr_autor": {
+                        "description": "Nome do autor",
+                        "type": "string"
+                    },
+                    "int_autor": {
+                        "description": "ID do autor",
+                        "type": "integer"
+                    },
+                    "vchr_lide": {
+                        "description": "Lide da matéria",
+                        "type": "string"
+                    },
+                    "vchr_titulo": {
+                        "description": "Título da matéria",
+                        "type": "string"
+                    },
+                    "vchr_conteudo": {
+                        "description": "Conteúdo da matéria",
+                        "type": "string"
+                    },
+                    "vchr_area": {
+                        "description": "Nome da área",
+                        "type": "string"
+                    },
+                    "id_area": {
+                        "description": "ID da área",
+                        "type": "integer"
+                    },
+                    "vchr_tags": {
+                        "description": "Tags da matéria",
+                        "type": "string"
+                    },
+                    "vchr_FontLink": {
+                        "description": "Link da fonte",
+                        "type": "string"
+                    },
+                    "vchr_LinkTitulo": {
+                        "description": "Título do link",
+                        "type": "string"
+                    },
+                    "vchr_seoTitle": {
+                        "description": "Título SEO",
+                        "type": "string"
+                    },
+                    "vchr_seoKeywords": {
+                        "description": "Palavras-chave SEO",
+                        "type": "string"
+                    },
+                    "og_title": {
+                        "description": "Título Open Graph",
+                        "type": "string"
+                    },
+                    "og_description": {
+                        "description": "Descrição Open Graph",
+                        "type": "string"
+                    },
+                    "og_image": {
+                        "description": "Imagem Open Graph",
+                        "type": "string"
+                    },
+                    "vchr_s3_storage": {
+                        "description": "Armazenamento S3",
+                        "type": "string"
+                    },
+                    "bool_onLine": {
+                        "description": "Se está online",
+                        "type": "boolean"
+                    },
+                    "bool_home": {
+                        "description": "Se aparece na home",
+                        "type": "boolean"
+                    },
+                    "base64Format": {
+                        "description": "Formato base64",
+                        "type": "string"
+                    },
+                    "materiaUUID": {
+                        "description": "UUID da matéria",
+                        "type": "string"
+                    },
+                    "IdSocialIconTemplate": {
+                        "description": "ID do template de ícone social",
+                        "type": "integer"
+                    },
+                    "created_at": {
+                        "description": "Data de criação",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "Data de atualização",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "User": {
+                "title": "User",
+                "description": "Modelo de Usuário",
+                "properties": {
+                    "id": {
+                        "description": "ID do usuário",
+                        "type": "integer"
+                    },
+                    "name": {
+                        "description": "Nome do usuário",
+                        "type": "string"
+                    },
+                    "email": {
+                        "description": "Email do usuário",
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "email_verified_at": {
+                        "description": "Data de verificação do email",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "created_at": {
+                        "description": "Data de criação",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "Data de atualização",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "Video": {
+                "title": "Video",
+                "description": "Modelo de Vídeo do YouTube",
+                "properties": {
+                    "id": {
+                        "description": "ID do vídeo",
+                        "type": "integer"
+                    },
+                    "int_IdMateria": {
+                        "description": "ID da matéria associada",
+                        "type": "integer"
+                    },
+                    "vchr_VideoId": {
+                        "description": "ID do vídeo no YouTube",
+                        "type": "string"
+                    },
+                    "vchr_LinkVideo": {
+                        "description": "Link do vídeo",
+                        "type": "string"
+                    },
+                    "int_IdArea": {
+                        "description": "ID da área",
+                        "type": "integer"
+                    },
+                    "vchr_Titulo": {
+                        "description": "Título do vídeo",
+                        "type": "string"
+                    },
+                    "vchr_Description": {
+                        "description": "Descrição do vídeo",
+                        "type": "string"
+                    },
+                    "vchr_YTThumbDefault": {
+                        "description": "Thumbnail padrão do YouTube",
+                        "type": "string"
+                    },
+                    "vchr_YTThumbMedium": {
+                        "description": "Thumbnail média do YouTube",
+                        "type": "string"
+                    },
+                    "vchr_YTThumbHigh": {
+                        "description": "Thumbnail alta do YouTube",
+                        "type": "string"
+                    },
+                    "vchr_Embed": {
+                        "description": "Código embed do vídeo",
+                        "type": "string"
+                    },
+                    "vchr_ChannelId": {
+                        "description": "ID do canal do YouTube",
+                        "type": "string"
+                    },
+                    "vchr_tags": {
+                        "description": "Tags do vídeo",
+                        "type": "string"
+                    },
+                    "dt_Publicado": {
+                        "description": "Data de publicação no YouTube",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "created_at": {
+                        "description": "Data de criação",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "Data de atualização",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "Writer": {
+                "title": "Writer",
+                "description": "Modelo de escritor/autor",
+                "properties": {
+                    "int_Id": {
+                        "description": "ID do escritor",
+                        "type": "integer"
+                    },
+                    "vchr_Nome": {
+                        "description": "Nome completo",
+                        "type": "string",
+                        "maxLength": 100
+                    },
+                    "vchr_Nick": {
+                        "description": "Apelido/Nick",
+                        "type": "string",
+                        "maxLength": 50
+                    },
+                    "long_Card": {
+                        "description": "Biografia/Card do escritor",
+                        "type": "string"
+                    },
+                    "bool_Enable": {
+                        "description": "Habilitado",
+                        "type": "boolean"
+                    },
+                    "vchr_LinkFoto": {
+                        "description": "Link da foto",
+                        "type": "string",
+                        "maxLength": 50
+                    },
+                    "vchr_LinkInta": {
+                        "description": "Link Instagram",
+                        "type": "string",
+                        "maxLength": 50
+                    },
+                    "vchr_Cargo": {
+                        "description": "Cargo/Função",
+                        "type": "string",
+                        "maxLength": 50
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Atrações",
+            "description": "API Endpoints para gerenciamento de atrações"
+        },
+        {
+            "name": "Concursos",
+            "description": "API Endpoints para gerenciamento de concursos"
+        },
+        {
+            "name": "Eventos",
+            "description": "API Endpoints para gerenciamento de eventos GEEK"
+        },
+        {
+            "name": "Areas",
+            "description": "Areas"
+        },
+        {
+            "name": "Autenticação",
+            "description": "Autenticação"
+        },
+        {
+            "name": "Galeria",
+            "description": "Galeria"
+        },
+        {
+            "name": "Matérias",
+            "description": "Matérias"
+        },
+        {
+            "name": "Vídeos",
+            "description": "Vídeos"
+        },
+        {
+            "name": "Writers",
+            "description": "Writers"
+        }
+    ]
+}

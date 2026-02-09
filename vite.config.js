@@ -10,4 +10,12 @@ export default defineConfig({
         }),
         tailwindcss(),
     ],
+    optimizeDeps: {
+        exclude: [],
+    },
+    server: {
+        hmr: {
+            overlay: false,
+        },
+    },
 });

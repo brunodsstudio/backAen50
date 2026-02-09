@@ -23,6 +23,11 @@ class AreaService
         return $this->areaRepository->getAll();
     }
 
+    public function getAllWithPaginate($perPage = 10, $page = 1)
+    {
+        return $this->areaRepository->getAllWithPaginate($perPage, $page);
+    }
+
     public function getById(int $id)
     {
         try {

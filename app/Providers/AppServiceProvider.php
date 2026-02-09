@@ -16,6 +16,10 @@ class AppServiceProvider extends ServiceProvider
             \App\Interfaces\AreaInterface::class, \App\Repositories\AreaRepository::class
         );
 
+         $this->app->bind(
+            \App\Interfaces\VideoInterface::class, \App\Repositories\VideoRepository::class
+        );
+
     }
 
     /**

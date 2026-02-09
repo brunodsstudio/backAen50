@@ -1,0 +1,88 @@
+### ===================================
+### API Galeria - Testes
+### ===================================
+
+### Variáveis
+@baseUrl = http://127.0.0.1:3001/api
+@email = admin@aeranerd.com
+@password = motokob8q2p9
+# Cole aqui o token obtido no login (sem aspas)
+@access_token = "eQ5YSeP1eHdRFPe17ZRJX7anUxAD2DUci5RvvMBsFLk4OpW0kzCEwXUPAyQaYxhU"
+@pastaS3 = FESTIVALDOJAPAO2024
+
+### ===================================
+### 1. Login - Obter Token JWT
+### IMPORTANTE: Execute este primeiro e copie o access_token para @token acima
+### ===================================
+
+# @name autenticar
+POST {{baseUrl}}/login
+Content-Type: application/json
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
+
+//@token = {{autenticar.response.body.$.access_token}}
+
+### ===================================
+### 2. Buscar Galeria - Página 1 (padrão 25 itens)
+### ===================================
+GET {{baseUrl}}/Galerias/{{pastaS3}}/1
+Authorization: Bearer {{token}}
+Accept: application/json
+
+### ===================================
+### 3. Buscar Galeria - Página 1 (10 itens por página)
+### ===================================
+GET {{baseUrl}}/Galerias/{{pastaS3}}/1?quantidadePorPagina=10
+Authorization: Bearer {{token}}
+Accept: application/json
+
+### ===================================
+### 4. Buscar Galeria - Página 2
+### ===================================
+GET {{baseUrl}}/Galerias/{{pastaS3}}/2
+Authorization: Bearer {{token}}
+Accept: application/json
+
+### ===================================
+### 5. Buscar Galeria - Quantidade customizada (50 por página)
+### ===================================
+GET {{baseUrl}}/Galerias/{{pastaS3}}/1?quantidadePorPagina=50
+Authorization: Bearer {{token}}
+Accept: application/json
+
+### ===================================
+### 6. Teste de Erro - Sem Token (deve retornar 401)
+### ===================================
+GET {{baseUrl}}/Galerias/{{pastaS3}}/1
+Accept: application/json
+
+### ===================================
+### 7. Teste de Erro - Página inválida (deve retornar 422)
+### ===================================
+GET {{baseUrl}}/Galerias/{{pastaS3}}/0
+Authorization: Bearer {{token}}
+Accept: application/json
+
+### ===================================
+### 8. Teste de Erro - Quantidade inválida (deve retornar 422)
+### ===================================
+GET {{baseUrl}}/Galerias/{{pastaS3}}/1?quantidadePorPagina=200
+Authorization: Bearer {{token}}
+Accept: application/json
+
+### ===================================
+### 9. Teste - Pasta inexistente (deve retornar 404)
+### ===================================
+GET {{baseUrl}}/Galerias/pasta-inexistente/1
+Authorization: Bearer {{token}}
+Accept: application/json
+
+### ===================================
+### 10. Refresh Token (se necessário)
+### ===================================
+POST {{baseUrl}}/auth/refresh
+Authorization: Bearer {{token}}
+Accept: application/json

@@ -1,5 +1,8 @@
-@email = "brunodsstudio@gmail.com"
+@email = "admin@aeranerd.com"
 @password = "motokob8q2p9"
+@access_token = "eQ5YSeP1eHdRFPe17ZRJX7anUxAD2DUci5RvvMBsFLk4OpW0kzCEwXUPAyQaYxhU"
+
+@pastaS3 = FESTIVALDOJAPAO2024
 
 # @name autenticar
 POST http://127.0.0.1:3001/api/login
@@ -13,7 +16,7 @@ Content-Type: application/json
 ###
 
 @token = {{autenticar.response.body.$.access_token}}
-
+#token = {{access_token}}
 
 # @name registrar
 POST http://127.0.0.1:3001/api/register
@@ -26,7 +29,8 @@ Content-Type: application/json
 }
 ###
 #@name materias
-GET http://127.0.0.1:3001/api/materias
+GET http://127.0.0.1:3001/api/materiasblza
+
 
 ###
 #@name areas  
@@ -35,6 +39,113 @@ GET http://127.0.0.1:3001/api/areas
 ###
 #@name writers
 GET http://127.0.0.1:3001/api/writers
+
+### ===================================
+### 2. Buscar Galeria - Página 1 (padrão 25 itens)
+### ===================================
+GET http://127.0.0.1:3001/api/Galerias/{{pastaS3}}/1
+Authorization: Bearer {{token}}
+Accept: application/json
+
+### ===================================
+### 3. Buscar Galeria - Página 1 (10 itens por página)
+### ===================================
+GET http://127.0.0.1:3001/api/Galerias/{{pastaS3}}/1?quantidadePorPagina=10
+Authorization: Bearer {{token}}
+Accept: application/json
+
+### ===================================
+### EVENTOS GEEK API
+### ===================================
+
+### Listar todos os eventos
+GET http://127.0.0.1:3001/api/events
+Accept: application/json
+
+### Listar eventos com filtros
+GET http://127.0.0.1:3001/api/events?cidade=São Paulo&data=2026-06-15
+Accept: application/json
+
+### Buscar evento específico
+GET http://127.0.0.1:3001/api/events/1
+Accept: application/json
+
+### Criar novo evento
+POST http://127.0.0.1:3001/api/events
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "nome": "Anime Festival 2026",
+  "descricao": "O maior evento de anime e cultura pop do Brasil",
+  "realizacao": "2026-06-15 10:00:00",
+  "link_foto": "https://example.com/foto.jpg",
+  "link_logo": "https://example.com/logo.png",
+  "link_site": "https://animefestival2026.com",
+  "link_instagram": "https://instagram.com/animefestival",
+  "agendas": [
+    {
+      "data": "2026-06-15",
+      "endereco": "Av. Paulista, 1000",
+      "cidade": "São Paulo"
+    },
+    {
+      "data": "2026-06-16",
+      "endereco": "Av. Paulista, 1000",
+      "cidade": "São Paulo"
+    }
+  ],
+  "atracoes": [1, 2],
+  "concursos": [1]
+}
+
+### Atualizar evento
+PUT http://127.0.0.1:3001/api/events/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "nome": "Anime Festival 2026 - Atualizado",
+  "descricao": "Nova descrição do evento",
+  "atracoes": [1, 2, 3],
+  "concursos": [1, 2]
+}
+
+### Deletar evento
+DELETE http://127.0.0.1:3001/api/events/1
+Authorization: Bearer {{token}}
+
+### Listar atrações
+GET http://127.0.0.1:3001/api/events/atracoes
+Accept: application/json
+
+### Criar atração
+POST http://127.0.0.1:3001/api/events/atracoes
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "nome": "Banda Anime Rock",
+  "tipo_atracao_id": 1,
+  "link_foto": "https://example.com/banda.jpg",
+  "descricao": "Banda especializada em covers de animes"
+}
+
+### Listar concursos
+GET http://127.0.0.1:3001/api/events/concursos
+Accept: application/json
+
+### Criar concurso
+POST http://127.0.0.1:3001/api/events/concursos
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "nome": "Concurso de Cosplay",
+  "tipo_concurso_id": 4,
+  "descricao": "Melhor cosplay do evento",
+  "datas_horas": "15/06/2026 às 14h - Palco Principal"
+}
 
 
 

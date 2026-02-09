@@ -2,9 +2,10 @@
 
 namespace App\Interfaces;
 
-use App\DTOs\ImagesDTO;
+use App\DTOs\ImagemDto;
 
-interface ImagesInterface{
+interface ImagesInterface
+{
     /**
      * Get all images.
      *
@@ -13,7 +14,16 @@ interface ImagesInterface{
     public function getAll();
 
     /**
-     * Get area by ID.
+     * Get all images by materia ID.
+     *
+     * @param int $idMateria
+     * @param array|null $tipos
+     * @return mixed
+     */
+    public function getAllByMateria(int $idMateria, ?array $tipos = null);
+
+    /**
+     * Get image by ID.
      *
      * @param int $id
      * @return mixed
@@ -21,27 +31,46 @@ interface ImagesInterface{
     public function getById(int $id);
 
     /**
-     * Create a new area.
+     * Create a new image.
      *
-     * @param array $data
+     * @param int $idMateria
+     * @param ImagemDto $imagesDTO
      * @return mixed
      */
-    public function create(ImagesDTO $imagesrDTO);
+    public function create(int $idMateria, ImagemDto $imagesDTO);
 
     /**
-     * Update an existing area.
+     * Create multiple images in batch.
+     *
+     * @param int $idMateria
+     * @param array $imagesDTOs
+     * @return mixed
+     */
+    public function createBatch(int $idMateria, array $imagesDTOs);
+
+    /**
+     * Update an existing image.
      *
      * @param int $id
-     * @param array $data
+     * @param ImagemDto $imagesDTO
      * @return mixed
      */
-    public function update(int $id, ImagesDTO $imagesDTO);
+    public function update(int $id, ImagemDto $imagesDTO);
 
     /**
-     * Delete an area.
+     * Delete an image.
      *
      * @param int $id
      * @return mixed
      */
     public function delete(int $id);
+
+    /**
+     * Delete multiple images by tipos.
+     *
+     * @param int $idMateria
+     * @param array $tipos
+     * @return mixed
+     */
+    public function deleteBatchByTipos(int $idMateria, array $tipos);
 }
