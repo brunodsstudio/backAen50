@@ -245,8 +245,16 @@ class ImagesController extends Controller
     // Editor de imagem destacada (crop/flip/watermark + presets)
     public function storeFeaturedEditor(Request $request, $materiaId)
     {
+        // Log para debug
+        \Log::info('storeFeaturedEditor - Request data', [
+            'has_image' => $request->hasFile('image'),
+            'image_valid' => $request->hasFile('image') && $request->file('image')->isValid(),
+            'image_mime' => $request->hasFile('image') ? $request->file('image')->getMimeType() : null,
+            'base_name' => $request->input('base_name'),
+        ]);
+
         $validator = Validator::make($request->all(), [
-            'image' => 'required|image|mimes:jpg,jpeg,png|max:10240',
+            'image' => 'required|file|mimes:jpg,jpeg,png|max:51200', // 50MB
             'base_name' => 'required|string|max:200',
             'crop' => 'nullable|array',
             'crop.x' => 'nullable|numeric',
@@ -260,6 +268,9 @@ class ImagesController extends Controller
         ]);
 
         if ($validator->fails()) {
+            \Log::error('storeFeaturedEditor - Validation failed', [
+                'errors' => $validator->errors()->toArray()
+            ]);
             return response()->json(['errors' => $validator->errors()], 422);
         }
 

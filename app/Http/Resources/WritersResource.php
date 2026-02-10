@@ -15,14 +15,14 @@ class WritersResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->int_Id,
-            'nome' => $this->vchr_Nome,
-            'nick' => $this->vchr_Nick,
-            'biografia' => $this->long_Card,
-            'habilitado' => $this->bool_Enable,
-            'foto' => $this->vchr_LinkFoto,
-            'instagram' => $this->vchr_LinkInta,
-            'cargo' => $this->vchr_Cargo,
+            'int_Id' => $this->int_Id,
+            'vchr_Nome' => $this->vchr_Nome,
+            'vchr_Nick' => $this->vchr_Nick,
+            'long_Card' => $this->long_Card,
+            'bool_Enable' => $this->bool_Enable,
+            'vchr_LinkFoto' => $this->vchr_LinkFoto,
+            'vchr_LinkInta' => $this->vchr_LinkInta,
+            'vchr_Cargo' => $this->vchr_Cargo,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

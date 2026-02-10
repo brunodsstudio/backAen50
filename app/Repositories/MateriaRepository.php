@@ -17,12 +17,9 @@ class MateriaRepository implements MateriaInterface
     {
         return Materia::all();
     }
-    public function getAllWithPaginate(int $perPage = 10, int $page = 1)
+    public function getAllWithPaginate(int $perPage = 10, int $page = 1, string $search = '')
     {
-      //$query = Materia::select("select count(*) from tb_aen_materias");
-      //$all = [];
-
-      return Materia::select(
+      $query = Materia::select(
           'id',
             'dt_post', 
             'vchr_autor', 
@@ -31,10 +28,20 @@ class MateriaRepository implements MateriaInterface
             'id_area', 
             'vchr_LinkTitulo',  
             'bool_onLine', 
-            'bool_home')
-        ->orderBy('id', 'desc')
-        ->paginate(20); //, ['*'], 'page', 1);
-
+            'bool_home');
+      
+      // Aplica filtro de busca se fornecido
+      if (!empty($search)) {
+          $query->where(function($q) use ($search) {
+              $q->where('vchr_titulo', 'LIKE', "%{$search}%")
+                ->orWhere('vchr_autor', 'LIKE', "%{$search}%")
+                ->orWhere('vchr_lide', 'LIKE', "%{$search}%")
+                ->orWhere('vchr_area', 'LIKE', "%{$search}%");
+          });
+      }
+      
+      return $query->orderBy('id', 'desc')
+        ->paginate($perPage, ['*'], 'page', $page);
     }   
 
 

@@ -27,7 +27,9 @@ class WritersRepository implements WritersInterface
                 'bool_Enable',
                 'vchr_LinkFoto',
                 'vchr_LinkInta',
-                'vchr_Cargo'
+                'vchr_Cargo',
+                'created_at',
+                'updated_at'
             )
             ->orderBy('vchr_Nome', 'asc')
             ->paginate($perPage, ['*'], 'page', $page);

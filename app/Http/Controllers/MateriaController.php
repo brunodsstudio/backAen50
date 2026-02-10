@@ -43,6 +43,13 @@ class MateriaController extends Controller
      *         required=false,
      *         @OA\Schema(type="integer", default=10)
      *     ),
+     *     @OA\Parameter(
+     *         name="search",
+     *         in="query",
+     *         description="Termo de busca para filtrar matérias (título, autor, lide ou área)",
+     *         required=false,
+     *         @OA\Schema(type="string")
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="Lista de matérias retornada com sucesso",
@@ -65,8 +72,9 @@ class MateriaController extends Controller
         try {
             $perPage = $request->query('perPage', 10);
             $page = $request->query('page', 1);
+            $search = $request->query('search', '');
             
-            $materia = $this->materiaService->getAllWithPaginate($perPage, $page);
+            $materia = $this->materiaService->getAllWithPaginate($perPage, $page, $search);
             
             return response()->json(MateriaResource::collection($materia->items()), 200);
         } catch (Exception $e) {

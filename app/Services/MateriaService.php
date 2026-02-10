@@ -22,9 +22,9 @@ class MateriaService
     {
         return $this->materiaRepository->getAll();
     }
-    public function getAllWithPaginate($perPage = 10, $page = 1)
+    public function getAllWithPaginate($perPage = 10, $page = 1, $search = '')
     {
-        return $this->materiaRepository->getAllWithPaginate($perPage, $page);
+        return $this->materiaRepository->getAllWithPaginate($perPage, $page, $search);
     }
 
     public function getById(int $id)

@@ -27,6 +27,7 @@ class Writers extends Model
 {
     protected $table = 'tb_aen_writers';
     protected $primaryKey = 'int_Id';
+    public $timestamps = true;
 
     protected $fillable = [
         'vchr_Nome',

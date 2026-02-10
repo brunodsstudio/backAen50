@@ -7,7 +7,7 @@ use App\DTOs\MateriaDto;
 interface MateriaInterface
 {
     public function getAll();
-   // public function getAllWithPaginate($perPage = 10, $page = 1);
+    public function getAllWithPaginate(int $perPage = 10, int $page = 1, string $search = '');
     public function getById(int $id);
     public function getByLinkTitulo(string $linkTitulo);
     public function getByTag(string $tag, int $limit = 3);
