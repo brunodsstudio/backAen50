@@ -31,6 +31,7 @@ Route::delete('/areas/{id}', [AreaController::class, 'destroy']);
 
 Route::group(['prefix' => 'materias'], function () {
     Route::get('/', [MateriaController::class, 'index']);
+    Route::get('/getAllSitemap', [MateriaController::class, 'allSiteMap']);
     Route::get('/{id}', [MateriaController::class, 'show']);
     Route::post('/', [MateriaController::class, 'store']);
     Route::put('/{id}', [MateriaController::class, 'update']);

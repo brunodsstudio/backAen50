@@ -84,6 +84,41 @@ class MateriaController extends Controller
     }
 
     /**
+     * @OA\Get(
+     *     path="/getAllSitemap",
+     *     tags={"Matérias"},
+     *     summary="Listar todas as links para sitemap",
+     *     description="Retorna uma lista de todas os links de matérias disponíveis",
+     *     
+     *     @OA\Response(
+     *         response=200,
+     *         description="Retorna uma lista de todas os links de matérias disponíveis retornada com sucesso",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/MateriaLinksSitemap")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Erro interno do servidor",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="error", type="string")
+     *         )
+     *     )
+     * )
+     */
+     public function allSiteMap(Request $request)
+    {
+        try {
+            $materia = $this->materiaService->getAllLinks();
+            return response()->json(MateriaResource::collection($materia), 200);
+        } catch (Exception $e) {
+            Log::error('Error retrieving materias: ' . $e->getMessage());
+            return response()->json(['error' => 'Could not retrieve materias.'], 500);
+        }
+    }
+
+    /**
      * Show the form for creating a new resource.
      */
     public function create()

@@ -5,23 +5,12 @@
 @pastaS3 = FESTIVALDOJAPAO2024
 
 # @name autenticar
-POST http://127.0.0.1:3001/api/login
+POST https://api.cosplaymag.com.br/api/login
 Content-Type: application/json
 
 {
   "email": {{email}},
   "password": {{password}}
-}
-###
-
-@name apiwebdiet
-POST https://homolog.webdiet.com.br/painel/v4/api/GLP/callback_parceiro.php
-Content-Type: application/json
-
-{
-"token": "8f4a2c9e1b7d3f6a0e5c8d2b9a4f1e7c3d6b0a5e8f2c9d1a4b7e0f3c6d9a2b5e8f1",
-"hash": "c55dc0a4ea815f3880addf3c1480ebf1e896309a41687007668037132395ed1a",
-"status": "prescricao_emitida"
 }
 
 ###
@@ -30,7 +19,7 @@ Content-Type: application/json
 #token = {{access_token}}
 
 # @name registrar
-POST http://127.0.0.1:3001/api/register
+POST https://api.cosplaymag.com.br/api/register
 Content-Type: application/json
 
 {
@@ -40,16 +29,16 @@ Content-Type: application/json
 }
 ###
 #@name materias
-GET http://127.0.0.1:3001/api/materias
+GET http://api.cosplaymag.com.br/api/materiasblza
 
 
 ###
 #@name areas  
-GET http://127.0.0.1:3001/api/areas
+GET http://api.cosplaymag.com.br/api/areas
 
 ###
 #@name writers
-GET http://127.0.0.1:3001/api/writers
+GET http://api.cosplaymag.com.br/api/writers
 
 ### ===================================
 ### 2. Buscar Galeria - Página 1 (padrão 25 itens)

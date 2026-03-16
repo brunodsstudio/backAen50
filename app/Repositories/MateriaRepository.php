@@ -17,6 +17,15 @@ class MateriaRepository implements MateriaInterface
     {
         return Materia::all();
     }
+
+    public function getAllLinks()
+    {
+        return Materia::select('vchr_LinkTitulo', 'updated_at')
+            ->where('bool_onLine', true)
+            ->orderBy('updated_at', 'desc')
+            ->get();
+    }
+
     public function getAllWithPaginate(int $perPage = 10, int $page = 1, string $search = '')
     {
       $query = Materia::select(

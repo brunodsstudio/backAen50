@@ -21,6 +21,14 @@ namespace App\Http\Controllers;
  *     scheme="bearer",
  *     bearerFormat="JWT"
  * )
+ * @OA\Schema(
+ *     schema="MateriaLinksSitemap",
+ *     type="object",
+ *     title="MateriaLinksSitemap",
+ *     description="Modelo simplificado de Matéria para Sitemap",
+ *     @OA\Property(property="vchr_LinkTitulo", type="string", description="Título do link da matéria"),
+ *     @OA\Property(property="updated_at", type="string", format="date-time", description="Data de última atualização")
+ * )
  */
 class ApiDocumentation
 {

@@ -1320,6 +1320,15 @@
                             "type": "integer",
                             "default": 10
                         }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Termo de busca para filtrar matérias (título, autor, lide ou área)",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 ],
                 "responses": {
@@ -1517,6 +1526,46 @@
                         "bearerAuth": []
                     }
                 ]
+            }
+        },
+        "/getAllSitemap": {
+            "get": {
+                "tags": [
+                    "Matérias"
+                ],
+                "summary": "Listar todas as links para sitemap",
+                "description": "Retorna uma lista de todas os links de matérias disponíveis",
+                "operationId": "d1d1c877e8c25f1205ceae8173d4684a",
+                "responses": {
+                    "200": {
+                        "description": "Retorna uma lista de todas os links de matérias disponíveis retornada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/MateriaLinksSitemap"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/materias/{id}": {
@@ -3254,6 +3303,22 @@
     },
     "components": {
         "schemas": {
+            "MateriaLinksSitemap": {
+                "title": "MateriaLinksSitemap",
+                "description": "Modelo simplificado de Matéria para Sitemap",
+                "properties": {
+                    "vchr_LinkTitulo": {
+                        "description": "Título do link da matéria",
+                        "type": "string"
+                    },
+                    "updated_at": {
+                        "description": "Data de última atualização",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
             "Atracao": {
                 "title": "Atração",
                 "required": [
