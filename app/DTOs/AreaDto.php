@@ -10,6 +10,7 @@ class AreaDto
     public ?string $type;
     public bool $b_menu;
     public int $int_rolePermission;
+    public bool $bool_Enabled;
 
     public function __construct(
         int $int_Id = 0,
@@ -17,7 +18,8 @@ class AreaDto
         ?string $vchr_Tag = null,
         ?string $type = null,
         bool $b_menu = false,
-        int $int_rolePermission = 0
+        int $int_rolePermission = 0,
+        bool $bool_Enabled = true
     ) {
         $this->int_Id = $int_Id;
         $this->vchr_AreaNome = $vchr_AreaNome;
@@ -25,6 +27,7 @@ class AreaDto
         $this->type = $type;
         $this->b_menu = $b_menu;
         $this->int_rolePermission = $int_rolePermission;
+        $this->bool_Enabled = $bool_Enabled;
     }
 
     public function toArray(): array
@@ -35,6 +38,7 @@ class AreaDto
             'type' => $this->type,
             'b_menu' => $this->b_menu,
             'int_rolePermission' => $this->int_rolePermission,
+            'bool_Enabled' => $this->bool_Enabled,
         ];
     }
 }

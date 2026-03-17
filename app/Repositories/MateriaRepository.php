@@ -115,7 +115,7 @@ class MateriaRepository implements MateriaInterface
         int $perPage = 10,
         string $orderBy = 'created_at',
         string $orderDirection = 'desc'
-    ) 
+        ) 
     {
         $query = Materia::select(
             'id',

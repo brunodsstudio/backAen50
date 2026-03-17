@@ -22,6 +22,7 @@ class AreaService
     {
         return $this->areaRepository->getAll();
     }
+    
 
     public function getAllWithPaginate($perPage = 10, $page = 1)
     {

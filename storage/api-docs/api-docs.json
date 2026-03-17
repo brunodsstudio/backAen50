@@ -21,7 +21,7 @@
                     "Areas"
                 ],
                 "summary": "Listar todas as áreas",
-                "description": "Retorna uma lista paginada de todas as áreas disponíveis ordenadas alfabeticamente",
+                "description": "Retorna uma lista paginada de todas as áreas habilitadas (bool_Enabled=1) ordenadas alfabeticamente",
                 "operationId": "f16518e18a005a2f966b63c0e1745342",
                 "parameters": [
                     {
@@ -3647,6 +3647,10 @@
                     "int_rolePermission": {
                         "description": "Permissão de role",
                         "type": "integer"
+                    },
+                    "bool_Enabled": {
+                        "description": "Se a área está habilitada",
+                        "type": "boolean"
                     },
                     "created_at": {
                         "description": "Data de criação",

@@ -22,13 +22,17 @@ class AreaRepository implements AreaInterface
 
     public function getAll()
     {
-        return $this->model->orderBy('vchr_AreaNome', 'asc')->get();
+        return $this->model
+            ->where('bool_Enabled', true)
+            ->orderBy('vchr_AreaNome', 'asc')
+            ->get();
     }
 
     public function getAllWithPaginate(int $perPage = 10, int $page = 1)
     {
         return $this->model
-            ->select('int_Id', 'vchr_AreaNome', 'vchr_Tag', 'type', 'b_menu', 'int_rolePermission')
+            ->select('int_Id', 'vchr_AreaNome', 'vchr_Tag', 'type', 'b_menu', 'int_rolePermission', 'bool_Enabled')
+            ->where('bool_Enabled', true)
             ->orderBy('vchr_AreaNome', 'asc')
             ->paginate($perPage, ['*'], 'page', $page);
     }

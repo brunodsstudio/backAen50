@@ -27,7 +27,7 @@ class AreaController extends Controller
      *     path="/api/areas",
      *     tags={"Areas"},
      *     summary="Listar todas as áreas",
-     *     description="Retorna uma lista paginada de todas as áreas disponíveis ordenadas alfabeticamente",
+     *     description="Retorna uma lista paginada de todas as áreas habilitadas (bool_Enabled=1) ordenadas alfabeticamente",
      *     @OA\Parameter(
      *         name="page",
      *         in="query",

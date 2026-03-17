@@ -27,6 +27,7 @@ class MateriaService
     {
         return $this->materiaRepository->getAllLinks();
     }
+    
     public function getAllWithPaginate($perPage = 10, $page = 1, $search = '')
     {
         return $this->materiaRepository->getAllWithPaginate($perPage, $page, $search);

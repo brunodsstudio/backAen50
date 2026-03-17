@@ -8,6 +8,14 @@ use Illuminate\Http\Request;
 use App\Services\MateriaService;
 use App\Repositories\MateriaRepository;
 use App\DTOs\MateriaDto;
+
+use App\Models\Area;
+use App\Http\Resources\AreaResource;
+use App\Services\AreaService;
+use App\Repositories\AreaRepository;
+use App\DTOs\AreaDto;
+
+
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -17,10 +25,12 @@ use Illuminate\Support\Facades\Log;
 class MateriaController extends Controller
 {
     protected MateriaService $materiaService;
+    protected AreaService $areaService;
 
     public function __construct()
     {
         $this->materiaService = new MateriaService(new MateriaRepository());
+        $this->areaService = new AreaService(new AreaRepository(new Area()));
     }
 
     /**
@@ -111,10 +121,24 @@ class MateriaController extends Controller
     {
         try {
             $materia = $this->materiaService->getAllLinks();
-            return response()->json(MateriaResource::collection($materia), 200);
+
+            $areas = $this->areaService->getAll();
+           
+           $a = [];
+
+           foreach ($areas as $area) {
+                $area->vchr_LinkTitulo = $area->vchr_Tag;
+                unset($area->int_Id, $area->vchr_AreaNome, $area->vchr_Tag, $area->type, $area->b_menu, $area->int_rolePermission, $area->bool_Enabled, $area->created_at);
+                $a[] = $area;
+            }
+
+             $links = array_merge($a, $materia->toArray());
+
+            return response()->json($links, 200);
         } catch (Exception $e) {
+        
             Log::error('Error retrieving materias: ' . $e->getMessage());
-            return response()->json(['error' => 'Could not retrieve materias.'], 500);
+            return response()->json(['error' => 'Could not retrieve materias.' . $e->getMessage()], 500);
         }
     }
 

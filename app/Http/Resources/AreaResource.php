@@ -21,6 +21,7 @@ class AreaResource extends JsonResource
             'type' => $this->type,
             'menu' => $this->b_menu,
             'role_permission' => $this->int_rolePermission,
+            'enabled' => $this->bool_Enabled,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
